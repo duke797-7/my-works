@@ -258,7 +258,7 @@ function render(){
   const pool = base.filter(it => kindF === "all" || it.k === kindF);
   const n = {all: pool.length, live:0, done:0, draft:0, other:0, trash: removed.size};
   pool.forEach(it => { if (it.s === "dead" || it.s === "locked") n.other++; else n[it.s]++; });
-  $("stages").innerHTML = STAGE_BTNS.filter(([f]) => f !== "other" || n.other).map(([f,l]) =>
+  $("stages").innerHTML = STAGE_BTNS.filter(([f]) => f === "all" || f === "trash" || n[f] || f === stageF).map(([f,l]) =>
     `<button type="button" class="stg stg-${f}" data-stage="${f}" aria-pressed="${f === stageF}"><b>${n[f]}</b>${l}</button>`).join("");
 
   const kc = {all: base.filter(stageOk).length};
