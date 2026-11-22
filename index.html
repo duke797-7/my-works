@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>阿古的成品庫</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* 版面：格子牆，一頁看完全部；整理模式每格出現刪除鈕，刪掉的收到最下面可還原 */
+:root{
+  --bg:#f3f5ef; --card:#ffffff; --ink:#1c2a1f; --muted:#5f6d62; --line:#dfe5da;
+  --accent:#2e7d3c; --accent-ink:#ffffff; --chip:#e8efe4;
+  --ok:#1f8a4c; --ok-bg:#e1f3e7; --bad:#b3261e; --bad-bg:#fbe5e3; --warn:#8a5a00; --warn-bg:#fdf0d2;
+  --danger:#c62828; --danger-ink:#ffffff;
+  --font-display:"Huninn","Noto Sans TC",system-ui,sans-serif;
+  --font-body:"Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121813; --card:#1b231c; --ink:#e6efe6; --muted:#9fb0a2; --line:#2b372d;
+    --accent:#5cbf6c; --accent-ink:#0d150e; --chip:#243026;
+    --ok:#6fd896; --ok-bg:#16301f; --bad:#ff9a92; --bad-bg:#3a1a18; --warn:#f3c665; --warn-bg:#352a12;
+    --danger:#ef5350; --danger-ink:#ffffff;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121813; --card:#1b231c; --ink:#e6efe6; --muted:#9fb0a2; --line:#2b372d;
+  --accent:#5cbf6c; --accent-ink:#0d150e; --chip:#243026;
+  --ok:#6fd896; --ok-bg:#16301f; --bad:#ff9a92; --bad-bg:#3a1a18; --warn:#f3c665; --warn-bg:#352a12;
+  --danger:#ef5350; --danger-ink:#ffffff;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.5}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 16px 80px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:12px}
+h1{font-family:var(--font-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.15;margin:0}
+.stats{display:flex;flex-wrap:wrap;gap:6px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px 10px;font-size:13px;color:var(--muted)}
+.stat b{color:var(--ink);font-variant-numeric:tabular-nums;font-size:15px;margin-right:3px}
+.tools{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0 10px;display:grid;gap:8px;border-bottom:1px solid var(--line)}
+.row{display:flex;gap:8px}
+.row input{flex:1;min-width:0;font:inherit;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.row select{font:inherit;padding:9px 8px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.edit-btn{font:inherit;font-weight:500;padding:9px 14px;border-radius:12px;border:1px solid var(--danger);background:var(--card);color:var(--danger);cursor:pointer;white-space:nowrap}
+.edit-btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.chips button{flex:none;font:inherit;font-size:13px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.banner{display:none;background:var(--bad-bg);color:var(--bad);border-radius:10px;padding:8px 12px;font-size:14px}
+body.editing .banner{display:block}
+.sync{font-size:12px;color:var(--muted)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h2{font-family:var(--font-display);font-weight:400;font-size:20px;margin:20px 0 10px;display:flex;align-items:baseline;gap:8px}
+h2 small{font-family:var(--font-body);font-size:13px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.tile{position:relative;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.cover{display:block;aspect-ratio:16/10;position:relative;background:var(--chip)}
+.cover img{width:100%;height:100%;object-fit:cover;display:block}
+.gen{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:8px 10px;color:#fff}
+.gen .kind{font-size:11px;letter-spacing:.08em;opacity:.92}
+.gen .emo{font-size:40px;line-height:1;align-self:center;margin-bottom:10px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.25))}
+.g-game{background:linear-gradient(135deg,#f08a3c,#d9467a)}
+.g-page{background:linear-gradient(135deg,#1f8f8a,#2f5fb3)}
+.g-design{background:linear-gradient(135deg,#7a4fd1,#d2558f)}
+.g-doc{background:linear-gradient(135deg,#3b5878,#5b7fa6)}
+.g-sheet{background:linear-gradient(135deg,#2f8a4d,#6cab3a)}
+.g-slide{background:linear-gradient(135deg,#d98a1c,#c4512b)}
+.g-site{background:linear-gradient(135deg,#46514a,#7b8b7f)}
+.tb{padding:8px 10px 10px;display:grid;gap:4px;flex:1;align-content:start}
+.tt{font-weight:700;font-size:14px;line-height:1.35;text-decoration:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tm{display:flex;flex-wrap:wrap;gap:4px;font-size:12px;color:var(--muted);align-items:center}
+.tag{background:var(--chip);border-radius:5px;padding:0 6px;color:var(--ink)}
+.st{border-radius:5px;padding:0 6px;font-weight:500}
+.st-ok{background:var(--ok-bg);color:var(--ok)}
+.st-bad{background:var(--bad-bg);color:var(--bad)}
+.st-warn{background:var(--warn-bg);color:var(--warn)}
+.tl{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px}
+.tl a{color:var(--accent);text-decoration:none}
+.tl a:hover{text-decoration:underline}
+.del{display:none;position:absolute;top:6px;right:6px;z-index:2;font:inherit;font-size:13px;font-weight:700;padding:5px 10px;border-radius:999px;border:0;background:var(--danger);color:var(--danger-ink);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+body.editing .del{display:block}
+body.editing .tile{border-color:var(--danger);border-style:dashed}
+.empty{color:var(--muted);padding:20px 0}
+.trash{margin-top:28px;border-top:1px solid var(--line);padding-top:6px}
+.trash summary{cursor:pointer;font-family:var(--font-display);font-size:18px;padding:8px 0}
+.trash ul{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.trash li{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:14px}
+.trash li span{flex:1;min-width:0;color:var(--muted)}
+.small-btn{font:inherit;font-size:13px;padding:4px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:none;gap:12px;align-items:center;font-size:14px;z-index:20;max-width:calc(100% - 32px)}
+.toast.show{display:flex}
+.toast button{font:inherit;font-weight:700;background:none;border:0;color:var(--accent);cursor:pointer;padding:2px 4px}
+footer{margin-top:28px;color:var(--muted);font-size:13px}
+@media (max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:10px}.gen .emo{font-size:34px}}
+@media (prefers-reduced-motion:no-preference){.tile{transition:border-color .15s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>阿古的成品庫</h1>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="tools">
+    <div class="row">
+      <label for="q" style="position:absolute;left:-9999px">搜尋成品</label>
+      <input id="q" type="search" placeholder="搜尋：韭菜、陀螺、早餐…" autocomplete="off">
+      <label for="sort" style="position:absolute;left:-9999px">排序</label>
+      <select id="sort"><option value="new">新到舊</option><option value="old">舊到新</option></select>
+      <button id="edit" class="edit-btn" type="button" aria-pressed="false">整理</button>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="分類"></div>
+    <div class="banner" id="banner">整理中：按格子右上角的「✕ 刪掉」把不用的拿掉。刪掉的會收到最下面，隨時可以還原。整理完按「完成」。</div>
+    <div class="sync" id="sync">在這裡刪掉的只記在這支手機。要每支手機都拿掉，請 Claude 把 works.json 裡那一筆的 hidden 改成 true。</div>
+  </div>
+
+  <main id="out"></main>
+
+  <details class="trash" id="trash">
+    <summary id="trashTitle">已刪掉的成品</summary>
+    <ul id="trashList"></ul>
+    <p style="margin:10px 0 0"><button class="small-btn" id="restoreAll" type="button">全部還原</button></p>
+  </details>
+
+  <footer>任何 Claude 帳號都能把成品加進來：照 GitHub 上 duke797-7/my-works 的 README.md 新增一筆到 works.json，推上 gh-pages 分支，一兩分鐘後這頁就會出現。</footer>
+</div>
+
+<div class="toast" id="toast" role="status"><span id="toastText"></span><button id="undo" type="button">還原</button></div>
+
+<script>
+const KIND = {
+  site:{label:"上線網站",g:"g-site"}, game:{label:"遊戲",g:"g-game"}, page:{label:"網頁",g:"g-page"},
+  design:{label:"設計稿",g:"g-design"}, doc:{label:"文件",g:"g-doc"}, sheet:{label:"試算表",g:"g-sheet"}, slide:{label:"簡報",g:"g-slide"}
+};
+const A = s => "https://claude.ai/artifact/" + s;
+
+/* 成品清單在 works.json：新增、隱藏都改那個檔（說明見 README.md） */
+const STATUS = {ok:["上線中","st-ok"], bad:["網址失效","st-bad"], warn:["需登入","st-warn"]};
+let SITES = [], WORKS = [];
+
+const FILTERS = [["all","全部"],["site","上線網站"],["game","遊戲"],["page","網頁"],["design","設計稿"],["doc","文件"],["sheet","試算表"],["slide","簡報"],["leek","韭菜公園相關"]];
+let ALL = [], BY_ID = {};
+function load(list){
+  ALL = list.filter(o => o && o.url && o.title && !o.hidden && KIND[o.kind]).map(o => ({
+    id: String(o.id || o.url), t: o.title, k: o.kind, date: o.date || "2000-01-01", url: o.url, d: o.desc || "",
+    img: o.cover || "", emo: o.emoji || "", st: STATUS[o.status] ? o.status : "", host: o.place || "", acc: o.account || "",
+    more: (o.links || []).filter(l => l && l.url).map(l => [l.name || "連結", l.url])
+  }));
+  SITES = ALL.filter(it => it.k === "site");
+  WORKS = ALL.filter(it => it.k !== "site");
+  BY_ID = Object.fromEntries(ALL.map(it => [it.id, it]));
+}
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const md = d => { const [, m, dd] = d.split("-"); return `${+m}/${+dd}`; };
+
+let filter = "all";
+let removed = new Set();
+let editing = false;
+const LS = "works-removed";
+
+try { filter = localStorage.getItem("works-filter") || "all"; } catch(e) {}
+try { removed = new Set(JSON.parse(localStorage.getItem(LS) || "[]")); } catch(e) {}
+
+function cover(it){
+  if (it.img) return `<img src="${it.img}" alt="${esc(it.t)} 封面" loading="lazy">`;
+  const k = KIND[it.k];
+  return `<div class="gen ${k.g}"><span class="kind">${k.label}</span><span class="emo" aria-hidden="true">${it.emo||"✦"}</span></div>`;
+}
+function tile(it){
+  const st = it.st ? `<span class="st ${STATUS[it.st][1]}">${STATUS[it.st][0]}</span>` : "";
+  const more = (it.more||[]).map(([n,u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join("");
+  return `<article class="tile" title="${esc(it.d)}">
+    <button class="del" type="button" data-del="${it.id}" aria-label="從成品庫刪掉 ${esc(it.t)}">✕ 刪掉</button>
+    <a class="cover" href="${it.url}" target="_blank" rel="noopener" aria-label="開啟 ${esc(it.t)}">${cover(it)}</a>
+    <div class="tb">
+      <a class="tt" href="${it.url}" target="_blank" rel="noopener">${esc(it.t)}</a>
+      <div class="tm"><span class="tag">${KIND[it.k].label}</span>${st}<span>${md(it.date)}</span>${it.acc && it.acc !== "主帳號" ? `<span>· ${esc(it.acc)}</span>` : ""}</div>
+      ${more ? `<div class="tl">${more}</div>` : ""}
+    </div>
+  </article>`;
+}
+function match(it, q){
+  if (filter === "leek" && !/韭菜公園/.test(it.t)) return false;
+  if (filter !== "all" && filter !== "leek" && it.k !== filter) return false;
+  return !q || (it.t + it.d + KIND[it.k].label).toLowerCase().includes(q);
+}
+function render(){
+  const q = $("q").value.trim().toLowerCase();
+  const dir = $("sort").value === "old" ? 1 : -1;
+  const by = (a,b) => dir * a.date.localeCompare(b.date);
+  const keep = it => !removed.has(it.id) && match(it,q);
+  /* 上線中的網站排前面 */
+  const s = SITES.filter(keep).sort((a,b) => (a.st==="ok") === (b.st==="ok") ? by(a,b) : (a.st==="ok" ? -1 : 1));
+  const w = WORKS.filter(keep).sort(by);
+  let h = "";
+  if (s.length) h += `<h2>已推上線的網站 <small>${s.length} 個</small></h2><div class="grid">${s.map(tile).join("")}</div>`;
+  if (w.length) h += `<h2>存在 Claude 的成品 <small>${w.length} 個</small></h2><div class="grid">${w.map(tile).join("")}</div>`;
+  $("out").innerHTML = h || `<p class="empty">找不到符合的成品。</p>`;
+  document.querySelectorAll("#chips button").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === filter));
+
+  const live = ALL.filter(it => !removed.has(it.id));
+  $("stats").innerHTML = [
+    [live.length,"個留著"],
+    [live.filter(x=>x.k==="site" && x.st==="ok").length,"個網站上線中"],
+    [removed.size,"個已刪掉"]
+  ].map(([n,l]) => `<span class="stat"><b>${n}</b>${l}</span>`).join("");
+
+  const gone = [...removed].map(id => BY_ID[id]).filter(Boolean);
+  $("trash").style.display = gone.length ? "" : "none";
+  $("trashTitle").textContent = `已刪掉的成品（${gone.length}）`;
+  $("trashList").innerHTML = gone.map(it => `<li><b>${esc(it.t)}</b><span>${KIND[it.k].label}</span><button class="small-btn" type="button" data-restore="${it.id}">還原</button></li>`).join("");
+}
+
+/* 刪除紀錄只存這台裝置 */
+function save(){ try { localStorage.setItem(LS, JSON.stringify([...removed])); } catch(e) {} }
+
+let lastRemoved = null, toastTimer = 0;
+function toast(msg, undoId){
+  lastRemoved = undoId || null;
+  $("toastText").textContent = msg;
+  $("undo").style.display = undoId ? "" : "none";
+  $("toast").classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $("toast").classList.remove("show"), 4000);
+}
+
+$("chips").innerHTML = FILTERS.map(([f,l]) => `<button type="button" data-f="${f}" aria-pressed="false">${l}</button>`).join("");
+$("chips").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  filter = b.dataset.f; try { localStorage.setItem("works-filter", filter); } catch(e) {}
+  render();
+});
+$("q").addEventListener("input", render);
+$("sort").addEventListener("change", render);
+$("edit").addEventListener("click", () => {
+  editing = !editing;
+  document.body.classList.toggle("editing", editing);
+  $("edit").setAttribute("aria-pressed", editing);
+  $("edit").textContent = editing ? "完成" : "整理";
+});
+$("out").addEventListener("click", e => {
+  const b = e.target.closest("[data-del]"); if (!b) return;
+  e.preventDefault();
+  const id = b.dataset.del;
+  removed.add(id); render(); save();
+  toast(`已刪掉「${BY_ID[id].t}」`, id);
+});
+$("trashList").addEventListener("click", e => {
+  const b = e.target.closest("[data-restore]"); if (!b) return;
+  removed.delete(b.dataset.restore); render(); save();
+  toast("已還原");
+});
+$("restoreAll").addEventListener("click", () => { removed.clear(); render(); save(); toast("全部還原了"); });
+$("undo").addEventListener("click", () => {
+  if (!lastRemoved) return;
+  removed.delete(lastRemoved); render(); save();
+  toast("已還原");
+});
+
+fetch("works.json", {cache: "no-store"})
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(list => { load(Array.isArray(list) ? list : []); removed = new Set([...removed].filter(id => BY_ID[id])); render(); })
+  .catch(() => { $("out").innerHTML = `<p class="empty">成品清單讀不到，重新整理一次試試。</p>`; });
+</script>
+</body>
+</html>
