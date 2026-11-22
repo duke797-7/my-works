@@ -13,7 +13,7 @@
   --bg:#f3f5ef; --card:#ffffff; --ink:#1c2a1f; --muted:#5f6d62; --line:#dfe5da;
   --accent:#2e7d3c; --accent-ink:#ffffff; --chip:#e8efe4;
   --ok:#1f8a4c; --ok-bg:#e1f3e7; --bad:#b3261e; --bad-bg:#fbe5e3; --warn:#8a5a00; --warn-bg:#fdf0d2;
-  --danger:#c62828; --danger-ink:#ffffff;
+  --danger:#c62828; --danger-ink:#ffffff; --done:#2a5fa8; --done-bg:#e3ecf9;
   --font-display:"Huninn","Noto Sans TC",system-ui,sans-serif;
   --font-body:"Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
   color-scheme:light;
@@ -23,7 +23,7 @@
     --bg:#121813; --card:#1b231c; --ink:#e6efe6; --muted:#9fb0a2; --line:#2b372d;
     --accent:#5cbf6c; --accent-ink:#0d150e; --chip:#243026;
     --ok:#6fd896; --ok-bg:#16301f; --bad:#ff9a92; --bad-bg:#3a1a18; --warn:#f3c665; --warn-bg:#352a12;
-    --danger:#ef5350; --danger-ink:#ffffff;
+    --danger:#ef5350; --danger-ink:#ffffff; --done:#8db8f2; --done-bg:#1a2a40;
     color-scheme:dark;
   }
 }
@@ -31,7 +31,7 @@
   --bg:#121813; --card:#1b231c; --ink:#e6efe6; --muted:#9fb0a2; --line:#2b372d;
   --accent:#5cbf6c; --accent-ink:#0d150e; --chip:#243026;
   --ok:#6fd896; --ok-bg:#16301f; --bad:#ff9a92; --bad-bg:#3a1a18; --warn:#f3c665; --warn-bg:#352a12;
-  --danger:#ef5350; --danger-ink:#ffffff;
+  --danger:#ef5350; --danger-ink:#ffffff; --done:#8db8f2; --done-bg:#1a2a40;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -100,28 +100,51 @@ body.editing .tile{border-color:var(--danger);border-style:dashed}
 footer{margin-top:28px;color:var(--muted);font-size:13px}
 @media (max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:10px}.gen .emo{font-size:34px}}
 @media (prefers-reduced-motion:no-preference){.tile{transition:border-color .15s}}
+
+/* 頂部階段按鈕（可以點） */
+.sr{position:absolute;left:-9999px}
+.stages{display:flex;flex-wrap:wrap;gap:6px}
+.stg{flex:none;font:inherit;font-size:14px;display:flex;align-items:baseline;gap:4px;padding:6px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer}
+.stg b{color:var(--ink);font-size:17px;font-variant-numeric:tabular-nums}
+.stg[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.stg[aria-pressed="true"] b{color:var(--bg)}
+.stg-live{border-left:4px solid var(--ok)}
+.stg-done{border-left:4px solid var(--done)}
+.stg-draft{border-left:4px solid var(--warn)}
+.stg-other{border-left:4px solid var(--bad)}
+.stg-trash{border-style:dashed}
+.st-live{background:var(--ok-bg);color:var(--ok)}
+.st-done{background:var(--done-bg);color:var(--done)}
+.st-draft{background:var(--warn-bg);color:var(--warn)}
+.st-dead{background:var(--bad-bg);color:var(--bad)}
+.st-locked{background:var(--chip);color:var(--muted)}
+.acc{background:var(--chip);border-radius:5px;padding:0 6px}
+.g-tool{background:linear-gradient(135deg,#0f7b6c,#3aa17e)}
+.now{margin:10px 0 0;font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.now:empty{display:none}
+section h2{margin-top:22px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <h1>阿古的成品庫</h1>
-    <div class="stats" id="stats"></div>
   </header>
 
   <div class="tools">
+    <div class="stages" id="stages" role="group" aria-label="完成程度"></div>
     <div class="row">
-      <label for="q" style="position:absolute;left:-9999px">搜尋成品</label>
+      <label for="q" class="sr">搜尋成品</label>
       <input id="q" type="search" placeholder="搜尋：韭菜、陀螺、早餐…" autocomplete="off">
-      <label for="sort" style="position:absolute;left:-9999px">排序</label>
-      <select id="sort"><option value="new">新到舊</option><option value="old">舊到新</option></select>
+      <label for="acc" class="sr">哪個帳號</label>
+      <select id="acc"></select>
       <button id="edit" class="edit-btn" type="button" aria-pressed="false">整理</button>
     </div>
     <div class="chips" id="chips" role="group" aria-label="分類"></div>
     <div class="banner" id="banner">整理中：按格子右上角的「✕ 刪掉」把不用的拿掉。刪掉的會收到最下面，隨時可以還原。整理完按「完成」。</div>
-    <div class="sync" id="sync">在這裡刪掉的只記在這支手機。要每支手機都拿掉，請 Claude 把 works.json 裡那一筆的 hidden 改成 true。</div>
   </div>
 
+  <p class="now" id="now"></p>
   <main id="out"></main>
 
   <details class="trash" id="trash">
@@ -130,99 +153,134 @@ footer{margin-top:28px;color:var(--muted);font-size:13px}
     <p style="margin:10px 0 0"><button class="small-btn" id="restoreAll" type="button">全部還原</button></p>
   </details>
 
-  <footer>任何 Claude 帳號都能把成品加進來：照 GitHub 上 duke797-7/my-works 的 README.md 新增一筆到 works.json，推上 gh-pages 分支，一兩分鐘後這頁就會出現。</footer>
+  <footer>在這裡刪掉的只記在這支手機。要每支手機都拿掉，跟 Claude 說「從成品庫拿掉 ○○」。每個帳號每天凌晨會自動把新成品加進來。</footer>
 </div>
 
 <div class="toast" id="toast" role="status"><span id="toastText"></span><button id="undo" type="button">還原</button></div>
 
 <script>
+/* 類別：做出來是什麼 */
 const KIND = {
-  site:{label:"上線網站",g:"g-site"}, game:{label:"遊戲",g:"g-game"}, page:{label:"網頁",g:"g-page"},
-  design:{label:"設計稿",g:"g-design"}, doc:{label:"文件",g:"g-doc"}, sheet:{label:"試算表",g:"g-sheet"}, slide:{label:"簡報",g:"g-slide"}
+  game:{label:"遊戲",g:"g-game",emo:"🎮"},
+  tool:{label:"工具",g:"g-tool",emo:"🧰"},
+  page:{label:"網頁",g:"g-page",emo:"🌐"},
+  design:{label:"設計稿",g:"g-design",emo:"🎨"},
+  doc:{label:"文件",g:"g-doc",emo:"📄"},
+  sheet:{label:"試算表",g:"g-sheet",emo:"📊"},
+  slide:{label:"簡報",g:"g-slide",emo:"📽️"}
 };
-const A = s => "https://claude.ai/artifact/" + s;
-
-/* 成品清單在 works.json：新增、隱藏都改那個檔（說明見 README.md） */
-const STATUS = {ok:["上線中","st-ok"], bad:["網址失效","st-bad"], warn:["需登入","st-warn"]};
-let SITES = [], WORKS = [];
-
-const FILTERS = [["all","全部"],["site","上線網站"],["game","遊戲"],["page","網頁"],["design","設計稿"],["doc","文件"],["sheet","試算表"],["slide","簡報"],["leek","韭菜公園相關"]];
-let ALL = [], BY_ID = {};
-function load(list){
-  ALL = list.filter(o => o && o.url && o.title && !o.hidden && KIND[o.kind]).map(o => ({
-    id: String(o.id || o.url), t: o.title, k: o.kind, date: o.date || "2000-01-01", url: o.url, d: o.desc || "",
-    img: o.cover || "", emo: o.emoji || "", st: STATUS[o.status] ? o.status : "", host: o.place || "", acc: o.account || "",
-    more: (o.links || []).filter(l => l && l.url).map(l => [l.name || "連結", l.url])
-  }));
-  SITES = ALL.filter(it => it.k === "site");
-  WORKS = ALL.filter(it => it.k !== "site");
-  BY_ID = Object.fromEntries(ALL.map(it => [it.id, it]));
-}
+const KIND_ORDER = ["game","tool","page","design","doc","sheet","slide"];
+/* 階段：做到哪裡 */
+const STAGE = {
+  live:{label:"上線中",c:"st-live",rank:0},
+  done:{label:"已完成",c:"st-done",rank:1},
+  draft:{label:"製作中",c:"st-draft",rank:2},
+  dead:{label:"網址失效",c:"st-dead",rank:3},
+  locked:{label:"需登入",c:"st-locked",rank:4}
+};
+/* 頂部按鈕：all 全部、live、done、draft、other（失效＋需登入）、trash 已刪掉 */
+const STAGE_BTNS = [["all","全部"],["live","上線中"],["done","已完成"],["draft","製作中"],["other","失效・需登入"],["trash","已刪掉"]];
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const md = d => { const [, m, dd] = d.split("-"); return `${+m}/${+dd}`; };
+const md = d => { const p = String(d).split("-"); return p.length === 3 ? `${+p[1]}/${+p[2]}` : ""; };
 
-let filter = "all";
+let ALL = [], BY_ID = {};
+let kindF = "all", stageF = "all", accF = "all";
 let removed = new Set();
 let editing = false;
 const LS = "works-removed";
-
-try { filter = localStorage.getItem("works-filter") || "all"; } catch(e) {}
+try { kindF = localStorage.getItem("works-kind") || "all"; stageF = localStorage.getItem("works-stage") || "all"; } catch(e) {}
 try { removed = new Set(JSON.parse(localStorage.getItem(LS) || "[]")); } catch(e) {}
+if (stageF === "trash") stageF = "all";
+
+/* 讀 works.json；舊格式（kind: site、status）也看得懂 */
+function load(list){
+  ALL = list.filter(o => o && o.url && o.title && !o.hidden).map(o => {
+    let kind = o.kind === "site" ? "tool" : (KIND[o.kind] ? o.kind : "page");
+    let stage = STAGE[o.stage] ? o.stage
+      : o.status === "ok" ? "live" : o.status === "bad" ? "dead" : o.status === "warn" ? "locked"
+      : o.kind === "site" ? "live" : "done";
+    return {
+      id: String(o.id || o.url), t: o.title, k: kind, s: stage, date: o.date || "", url: o.url, d: o.desc || "",
+      img: o.cover || "", emo: o.emoji || KIND[kind].emo, place: o.place || "", acc: o.account || "主帳號",
+      more: (o.links || []).filter(l => l && l.url).map(l => [l.name || "連結", l.url])
+    };
+  });
+  BY_ID = Object.fromEntries(ALL.map(it => [it.id, it]));
+  removed = new Set([...removed].filter(id => BY_ID[id]));
+  const accs = [...new Set(ALL.map(it => it.acc))];
+  $("acc").innerHTML = `<option value="all">全部帳號</option>` + accs.map(a => `<option value="${esc(a)}">${esc(a)}</option>`).join("");
+  $("acc").style.display = accs.length > 1 ? "" : "none";
+}
 
 function cover(it){
-  if (it.img) return `<img src="${it.img}" alt="${esc(it.t)} 封面" loading="lazy">`;
+  if (it.img) return `<img src="${esc(it.img)}" alt="${esc(it.t)} 封面" loading="lazy">`;
   const k = KIND[it.k];
-  return `<div class="gen ${k.g}"><span class="kind">${k.label}</span><span class="emo" aria-hidden="true">${it.emo||"✦"}</span></div>`;
+  return `<div class="gen ${k.g}"><span class="kind">${k.label}</span><span class="emo" aria-hidden="true">${esc(it.emo)}</span></div>`;
 }
 function tile(it){
-  const st = it.st ? `<span class="st ${STATUS[it.st][1]}">${STATUS[it.st][0]}</span>` : "";
-  const more = (it.more||[]).map(([n,u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join("");
+  const st = STAGE[it.s];
+  const more = it.more.map(([n,u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(n)}</a>`).join("");
   return `<article class="tile" title="${esc(it.d)}">
-    <button class="del" type="button" data-del="${it.id}" aria-label="從成品庫刪掉 ${esc(it.t)}">✕ 刪掉</button>
-    <a class="cover" href="${it.url}" target="_blank" rel="noopener" aria-label="開啟 ${esc(it.t)}">${cover(it)}</a>
+    <button class="del" type="button" data-del="${esc(it.id)}" aria-label="從成品庫刪掉 ${esc(it.t)}">✕ 刪掉</button>
+    <a class="cover" href="${esc(it.url)}" target="_blank" rel="noopener" aria-label="開啟 ${esc(it.t)}">${cover(it)}</a>
     <div class="tb">
-      <a class="tt" href="${it.url}" target="_blank" rel="noopener">${esc(it.t)}</a>
-      <div class="tm"><span class="tag">${KIND[it.k].label}</span>${st}<span>${md(it.date)}</span>${it.acc && it.acc !== "主帳號" ? `<span>· ${esc(it.acc)}</span>` : ""}</div>
+      <a class="tt" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.t)}</a>
+      <div class="tm"><span class="st ${st.c}">${st.label}</span><span>${md(it.date)}</span>${it.acc !== "主帳號" ? `<span class="acc">${esc(it.acc)}</span>` : ""}</div>
       ${more ? `<div class="tl">${more}</div>` : ""}
     </div>
   </article>`;
 }
-function match(it, q){
-  if (filter === "leek" && !/韭菜公園/.test(it.t)) return false;
-  if (filter !== "all" && filter !== "leek" && it.k !== filter) return false;
-  return !q || (it.t + it.d + KIND[it.k].label).toLowerCase().includes(q);
+
+const kept = () => ALL.filter(it => !removed.has(it.id) && (accF === "all" || it.acc === accF));
+function stageOk(it){
+  if (stageF === "all") return true;
+  if (stageF === "other") return it.s === "dead" || it.s === "locked";
+  return it.s === stageF;
 }
 function render(){
   const q = $("q").value.trim().toLowerCase();
-  const dir = $("sort").value === "old" ? 1 : -1;
-  const by = (a,b) => dir * a.date.localeCompare(b.date);
-  const keep = it => !removed.has(it.id) && match(it,q);
-  /* 上線中的網站排前面 */
-  const s = SITES.filter(keep).sort((a,b) => (a.st==="ok") === (b.st==="ok") ? by(a,b) : (a.st==="ok" ? -1 : 1));
-  const w = WORKS.filter(keep).sort(by);
+  const base = kept();
+  const list = base.filter(it => stageOk(it) && (kindF === "all" || it.k === kindF) &&
+    (!q || (it.t + it.d + KIND[it.k].label + it.acc).toLowerCase().includes(q)));
+  /* 依類別分區；區內：上線中 → 已完成 → 製作中 → 其他，同階段新的在前 */
+  const sortIn = (a,b) => STAGE[a.s].rank - STAGE[b.s].rank || b.date.localeCompare(a.date);
   let h = "";
-  if (s.length) h += `<h2>已推上線的網站 <small>${s.length} 個</small></h2><div class="grid">${s.map(tile).join("")}</div>`;
-  if (w.length) h += `<h2>存在 Claude 的成品 <small>${w.length} 個</small></h2><div class="grid">${w.map(tile).join("")}</div>`;
-  $("out").innerHTML = h || `<p class="empty">找不到符合的成品。</p>`;
-  document.querySelectorAll("#chips button").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === filter));
+  for (const k of KIND_ORDER) {
+    const g = list.filter(it => it.k === k).sort(sortIn);
+    if (!g.length) continue;
+    h += `<section><h2>${KIND[k].label} <small>${g.length} 個</small></h2><div class="grid">${g.map(tile).join("")}</div></section>`;
+  }
+  $("out").innerHTML = h || `<p class="empty">這個條件下沒有成品。</p>`;
 
-  const live = ALL.filter(it => !removed.has(it.id));
-  $("stats").innerHTML = [
-    [live.length,"個留著"],
-    [live.filter(x=>x.k==="site" && x.st==="ok").length,"個網站上線中"],
-    [removed.size,"個已刪掉"]
-  ].map(([n,l]) => `<span class="stat"><b>${n}</b>${l}</span>`).join("");
+  /* 頂部按鈕的數字跟著帳號、類別篩選走 */
+  const pool = base.filter(it => kindF === "all" || it.k === kindF);
+  const n = {all: pool.length, live:0, done:0, draft:0, other:0, trash: removed.size};
+  pool.forEach(it => { if (it.s === "dead" || it.s === "locked") n.other++; else n[it.s]++; });
+  $("stages").innerHTML = STAGE_BTNS.filter(([f]) => f !== "other" || n.other).map(([f,l]) =>
+    `<button type="button" class="stg stg-${f}" data-stage="${f}" aria-pressed="${f === stageF}"><b>${n[f]}</b>${l}</button>`).join("");
+
+  const kc = {all: base.filter(stageOk).length};
+  base.filter(stageOk).forEach(it => { kc[it.k] = (kc[it.k] || 0) + 1; });
+  $("chips").innerHTML = [["all","全部"], ...KIND_ORDER.map(k => [k, KIND[k].label])]
+    .filter(([f]) => f === "all" || kc[f] || f === kindF)
+    .map(([f,l]) => `<button type="button" data-f="${f}" aria-pressed="${f === kindF}">${l} ${kc[f] || 0}</button>`).join("");
+
+  const parts = [];
+  if (stageF !== "all") parts.push(STAGE_BTNS.find(b => b[0] === stageF)[1]);
+  if (kindF !== "all") parts.push(KIND[kindF].label);
+  if (accF !== "all") parts.push(accF);
+  $("now").innerHTML = parts.length ? `正在看：<b>${esc(parts.join(" · "))}</b>，共 ${list.length} 個 <button class="small-btn" id="clear" type="button">看全部</button>` : "";
 
   const gone = [...removed].map(id => BY_ID[id]).filter(Boolean);
-  $("trash").style.display = gone.length ? "" : "none";
   $("trashTitle").textContent = `已刪掉的成品（${gone.length}）`;
-  $("trashList").innerHTML = gone.map(it => `<li><b>${esc(it.t)}</b><span>${KIND[it.k].label}</span><button class="small-btn" type="button" data-restore="${it.id}">還原</button></li>`).join("");
+  $("trashList").innerHTML = gone.length ? gone.map(it => `<li><b>${esc(it.t)}</b><span>${KIND[it.k].label}</span><button class="small-btn" type="button" data-restore="${esc(it.id)}">還原</button></li>`).join("")
+    : `<li><span>目前沒有刪掉的成品。按「整理」就能刪掉不用的。</span></li>`;
 }
 
-/* 刪除紀錄只存這台裝置 */
 function save(){ try { localStorage.setItem(LS, JSON.stringify([...removed])); } catch(e) {} }
+function remember(){ try { localStorage.setItem("works-kind", kindF); localStorage.setItem("works-stage", stageF); } catch(e) {} }
 
 let lastRemoved = null, toastTimer = 0;
 function toast(msg, undoId){
@@ -234,14 +292,22 @@ function toast(msg, undoId){
   toastTimer = setTimeout(() => $("toast").classList.remove("show"), 4000);
 }
 
-$("chips").innerHTML = FILTERS.map(([f,l]) => `<button type="button" data-f="${f}" aria-pressed="false">${l}</button>`).join("");
+$("stages").addEventListener("click", e => {
+  const b = e.target.closest("[data-stage]"); if (!b) return;
+  const f = b.dataset.stage;
+  if (f === "trash") { $("trash").open = true; $("trash").scrollIntoView({behavior:"smooth", block:"start"}); return; }
+  stageF = (stageF === f) ? "all" : f; remember(); render();
+});
 $("chips").addEventListener("click", e => {
-  const b = e.target.closest("button"); if (!b) return;
-  filter = b.dataset.f; try { localStorage.setItem("works-filter", filter); } catch(e) {}
-  render();
+  const b = e.target.closest("[data-f]"); if (!b) return;
+  kindF = b.dataset.f; remember(); render();
+});
+$("now").addEventListener("click", e => {
+  if (!e.target.closest("#clear")) return;
+  stageF = "all"; kindF = "all"; accF = "all"; $("acc").value = "all"; $("q").value = ""; remember(); render();
 });
 $("q").addEventListener("input", render);
-$("sort").addEventListener("change", render);
+$("acc").addEventListener("change", () => { accF = $("acc").value; render(); });
 $("edit").addEventListener("click", () => {
   editing = !editing;
   document.body.classList.toggle("editing", editing);
@@ -252,24 +318,22 @@ $("out").addEventListener("click", e => {
   const b = e.target.closest("[data-del]"); if (!b) return;
   e.preventDefault();
   const id = b.dataset.del;
-  removed.add(id); render(); save();
+  removed.add(id); save(); render();
   toast(`已刪掉「${BY_ID[id].t}」`, id);
 });
 $("trashList").addEventListener("click", e => {
   const b = e.target.closest("[data-restore]"); if (!b) return;
-  removed.delete(b.dataset.restore); render(); save();
-  toast("已還原");
+  removed.delete(b.dataset.restore); save(); render(); toast("已還原");
 });
-$("restoreAll").addEventListener("click", () => { removed.clear(); render(); save(); toast("全部還原了"); });
+$("restoreAll").addEventListener("click", () => { removed.clear(); save(); render(); toast("全部還原了"); });
 $("undo").addEventListener("click", () => {
   if (!lastRemoved) return;
-  removed.delete(lastRemoved); render(); save();
-  toast("已還原");
+  removed.delete(lastRemoved); save(); render(); toast("已還原");
 });
 
 fetch("works.json", {cache: "no-store"})
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(list => { load(Array.isArray(list) ? list : []); removed = new Set([...removed].filter(id => BY_ID[id])); render(); })
+  .then(list => { load(Array.isArray(list) ? list : []); render(); })
   .catch(() => { $("out").innerHTML = `<p class="empty">成品清單讀不到，重新整理一次試試。</p>`; });
 </script>
 </body>
