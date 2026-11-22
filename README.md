@@ -34,6 +34,13 @@
 | `links` | 額外連結（後台、試玩版、GitHub…），沒有就 `[]` |
 | `hidden` | 阿古說不要了就改成 `true`，網站就不顯示（資料留著，之後要還原改回 `false`） |
 
+## 自動同步（每個帳號的每日排程任務）
+
+1. 列出這個 Claude 帳號的所有成品（artifact），以及這個帳號連得到的 Netlify／Cloudflare／GitHub Pages 網站。
+2. 用 `url` 跟 `works.json` 比對：已經有的（包括 `hidden: true` 的）**一律不動、不要重新加回來**；只把沒有的加在最後面。
+3. `account` 填這個帳號的名稱。Claude 成品截不到圖，`cover` 留空、填 `emoji`；上線網站能截圖就做封面。
+4. 有新增才 commit，直接推到 `gh-pages`。沒有新的就什麼都不做。
+
 ## 規則
 
 - 只加阿古說要加的成品。
