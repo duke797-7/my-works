@@ -2,277 +2,325 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e1418">
 <title>南澳家鄉車</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-/* VOICE everyday service for neighbours: warm, plain, sure of itself
-   IDEA a taxi fare meter and roof sign, trimmed with Atayal diamond weave
-   PICTURE the live meter (big amber digits) beside the booking form; a route map of the six stops below
-   COLOUR Nan'ao coast photo behind the first screen, Atayal red weave and accents, ink black, white panels, taxi yellow for call actions
-   TYPE Noto Sans TC 900/700/400 + Barlow Condensed for figures
-   LAYOUT laptop: title, then form left | sticky meter right; phone: title, meter, form, map, slim fare bar */
-:root{color-scheme:light;--bg:#fff;--ink:#1b1214;--mute:#66585a;--line:#e6dbda;--red:#c8102e;--panel:#fff;--panel2:#faf5f4;--soft:#f6efed;--yel:#ffc21a;--meter:#171112;--led:#ffb81c;--land:#f4f2ea;--land2:#dce7d3;--sea:#bcdff2;--seaink:#2b6c93;--road:#cfc5be;--route:#c8102e;--black:#150f10;--link:#b00d28;--fromt:#8a5f00}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--bg:#150f10;--ink:#f4ecea;--mute:#b9aaaa;--line:#3b2d2f;--red:#9e0d25;--panel:#211819;--panel2:#2a2022;--soft:#1c1415;--meter:#0b0809;--land:#24211c;--land2:#1a2a1f;--sea:#123248;--seaink:#8cc4e8;--road:#5b504c;--route:#ff4d5e;--black:#0b0809;--link:#ff7a88;--fromt:#ffc21a}}
-:root[data-theme=dark]{color-scheme:dark;--bg:#150f10;--ink:#f4ecea;--mute:#b9aaaa;--line:#3b2d2f;--red:#9e0d25;--panel:#211819;--panel2:#2a2022;--soft:#1c1415;--meter:#0b0809;--land:#24211c;--land2:#1a2a1f;--sea:#123248;--seaink:#8cc4e8;--road:#5b504c;--route:#ff4d5e;--black:#0b0809;--link:#ff7a88;--fromt:#ffc21a}
+/* VOICE a neighbourly ride service that feels like a real app on a phone
+   IDEA a ride-hailing booking card laid over the Nan'ao coast, trimmed with Atayal weave
+   PICTURE the coast photo across the top, the booking card (from → to, live fare) sitting on it
+   COLOUR sea blue from the photo, white cards, ink, taxi yellow for the call action, Atayal red for drop-off and weave
+   TYPE Noto Sans TC 700/500/400 + Barlow Condensed for fares
+   LAYOUT phone: app bar with menu, photo band, card overlapping it, sticky fare bar once the call button scrolls away; laptop: title left, card right on the photo */
+:root{color-scheme:light;--bg:#f3f6f7;--card:#fff;--ink:#14191d;--mute:#5b6670;--line:#e1e7ea;--soft:#eef3f5;--sea:#0f5f86;--yel:#ffc21a;--red:#c8102e;--bar:#0e1418;--land:#eef3ee;--land2:#d9e7dc;--seaf:#bfe3f3;--seaink:#2b6c93;--road:#c9d1d5;--route:#c8102e;--fromt:#8a5f00;--link:#0f5f86}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--bg:#0c1114;--card:#151c20;--ink:#edf2f4;--mute:#a3afb7;--line:#27323a;--soft:#1c252b;--land:#1d2420;--land2:#17261d;--seaf:#123248;--seaink:#8cc4e8;--road:#4b5559;--route:#ff4d5e;--fromt:#ffc21a;--link:#7cc3ea}}
+:root[data-theme=dark]{color-scheme:dark;--bg:#0c1114;--card:#151c20;--ink:#edf2f4;--mute:#a3afb7;--line:#27323a;--soft:#1c252b;--land:#1d2420;--land2:#17261d;--seaf:#123248;--seaink:#8cc4e8;--road:#4b5559;--route:#ff4d5e;--fromt:#ffc21a;--link:#7cc3ea}
 *{box-sizing:border-box;min-width:0}
-html{scroll-padding-top:16px}
+html{scroll-padding-top:72px;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;overflow-x:clip}
 a{color:inherit}
-.band{padding-block:clamp(28px,4vw,60px);padding-left:max(5vw,16px,env(safe-area-inset-left,0px));padding-right:max(5vw,16px,env(safe-area-inset-right,0px))}
-.wrap{max-width:1240px;margin:0 auto}
-.scroll{overflow-x:auto}
-h1{font-size:clamp(32px,4.6vw,52px);line-height:1.08;letter-spacing:-.02em;font-weight:900;margin:0 0 10px;text-wrap:balance}
-h2{font-size:clamp(26px,3vw,36px);line-height:1.1;letter-spacing:-.02em;font-weight:900;margin:0 0 10px;text-wrap:balance}
-.nav{background:var(--black);color:#fff;display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px;padding:10px max(5vw,16px)}
-.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px;text-decoration:none;color:#fff}
-.links{display:flex;gap:4px}
-.links a{color:#efe6e4;text-decoration:none;padding:10px 8px;font-size:15px;white-space:nowrap}
-.links a:hover{color:var(--yel)}
-.callpill{margin-left:auto;display:flex;align-items:center;gap:6px;background:var(--yel);color:#1b1214;font-weight:700;text-decoration:none;border-radius:999px;padding:9px 16px;white-space:nowrap}
-.weave{height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14'%3E%3Crect width='28' height='14' fill='%23c8102e'/%3E%3Cpath d='M14 1L21 7L14 13L7 7Z M0 1L4 7L0 13Z M28 1L24 7L28 13Z' fill='%23140e0f'/%3E%3Cpath d='M14 4L17.5 7L14 10L10.5 7Z' fill='%23fff'/%3E%3Ccircle cx='14' cy='7' r='1.1' fill='%23c8102e'/%3E%3C/svg%3E") repeat-x;background-size:28px 14px}
-.hero{position:relative;color:#fff;background:#0f5f86 url("bg.jpg") center top/100% auto no-repeat}
-.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,24,38,.62) 0,rgba(6,24,38,.3) 220px,rgba(6,24,38,.12) 320px,rgba(6,24,38,.12) 100%),linear-gradient(180deg,rgba(15,95,134,0) calc(75vw - 140px),#0f5f86 75vw)}
-.hero>.wrap{position:relative}
-.hero h1,.hero .lede{text-shadow:0 2px 14px rgba(0,0,0,.45)}
-.lede{font-size:17px;max-width:40em;margin:0 0 24px}
-.grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:20px;align-items:start}
-.panel{background:var(--panel);color:var(--ink);border-radius:18px;padding:20px}
-fieldset{border:0;margin:0 0 18px;padding:0}
-legend,.lab{display:block;font-weight:700;font-size:15px;margin-bottom:8px;padding:0}
-.chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.chip{min-height:48px;border:1.5px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:12px;font:inherit;font-weight:700;cursor:pointer;padding:6px 4px}
-.chip:hover{border-color:var(--ink)}
-#from .chip[aria-pressed=true]{background:var(--yel);border-color:#cf9a00;color:#1b1214}
-#to .chip[aria-pressed=true]{background:#c8102e;border-color:#c8102e;color:#fff}
-.gps{width:100%;min-height:48px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px dashed var(--ink);background:transparent;color:var(--ink);border-radius:12px;font:inherit;font-weight:700;cursor:pointer}
-.gps[aria-pressed=true]{background:var(--yel);border:1.5px solid #cf9a00;color:#1b1214}
-.status{font-size:14px;color:var(--mute);margin:8px 0 0}
-.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px;align-items:end}
-.row2:last-child{margin-bottom:0}
-.seg{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--line);border-radius:12px;overflow:hidden}
-.seg button{min-height:46px;border:0;background:var(--panel2);font:inherit;font-weight:700;color:var(--ink);cursor:pointer}
-.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
-input[type=datetime-local],select{width:100%;min-height:46px;font:inherit;font-size:16px;border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--panel);color:var(--ink)}
-input[type=datetime-local]{margin-top:8px}
+button{font:inherit;color:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.num{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-variant-numeric:tabular-nums}
 [hidden]{display:none!important}
-.step{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;align-items:center}
-.step button{min-height:46px;border:0;background:var(--panel2);font-size:22px;color:var(--ink);cursor:pointer}
-.step button:disabled{opacity:.35;cursor:default}
-.step output{text-align:center;font-weight:700;font-size:18px}
-.check{display:flex;align-items:center;gap:10px;min-height:46px;font-weight:700;cursor:pointer}
-.check input{width:22px;height:22px;accent-color:#c8102e;flex:none}
 :focus-visible{outline:3px solid var(--yel);outline-offset:2px}
-.meter{background:var(--meter);color:#f4ecea;border-radius:22px;padding:18px 20px 20px;border:6px solid #2b2224;position:sticky;top:16px}
-.mtop{display:flex;justify-content:space-between;align-items:center;font-size:15px;color:#d5c8c8}
-.lamp{background:var(--yel);color:#1b1214;font-weight:900;border-radius:6px;padding:2px 10px;font-size:14px;white-space:nowrap}
-.lamp.n{background:#e8233f;color:#fff}
-.screen{background:#050404;border-radius:12px;padding:6px 16px 4px;margin:10px 0 10px;display:flex;align-items:baseline;justify-content:flex-end;gap:10px;box-shadow:inset 0 2px 10px rgba(0,0,0,.9)}
-.screen small{font:700 24px "Barlow Condensed",sans-serif;color:#d39c2f}
-.screen b{font:700 clamp(64px,8vw,96px)/1.05 "Barlow Condensed",sans-serif;color:var(--led);font-variant-numeric:tabular-nums;text-shadow:0 0 18px rgba(255,184,28,.35)}
-.trip{margin:0;font-weight:700;font-size:17px;color:#fff}
-.mrow{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:15px;color:#e3d6d6}
-.mrow b{font:700 22px "Barlow Condensed",sans-serif;color:#fff}
-.bd{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:14px}
-.bd td{padding:5px 0;border-top:1px solid #30272a;color:#d6c9c9}
-.bd td:last-child{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;color:#fff;padding-left:12px}
-.acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:12px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;border:0;padding:8px 10px;text-align:center}
-.btn.y{background:var(--yel);color:#1b1214;grid-column:1/-1;font-size:18px;min-height:56px}
-.btn.y:hover{background:#ffd45a}
-.btn.l{background:#06c755;color:#fff}
-.btn.o{background:transparent;color:#f4ecea;border:1.5px solid #4c3f41}
-.btn.o:hover{border-color:#f4ecea}
-.note{font-size:14px;color:#d5c8c8;margin:12px 0 0}
-.msgbox summary{cursor:pointer;font-size:14px;color:#d5c8c8;margin-top:8px;min-height:32px}
-.msgbox pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.55 "Noto Sans TC",sans-serif;background:#050404;padding:10px 12px;border-radius:10px;color:#f4ecea;margin:6px 0 0}
-.mapgrid{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:32px;align-items:start}
-figure{margin:0}
-.fig{position:relative;min-height:540px;border-radius:18px;overflow:hidden;background:var(--land)}
+.appbar{position:sticky;top:0;z-index:30;background:var(--bar);color:#fff;height:60px;display:flex;align-items:center;gap:6px;padding:0 max(10px,env(safe-area-inset-right,0px)) 0 max(14px,env(safe-area-inset-left,0px))}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:18px;margin-right:auto;white-space:nowrap}
+.links{display:none;gap:2px;margin-right:8px}
+.links a{color:#dfe7ea;text-decoration:none;padding:8px 12px;border-radius:10px;font-size:15px}
+.links a:hover{background:rgba(255,255,255,.08);color:#fff}
+.iconbtn{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;border:0;background:transparent;color:#fff;cursor:pointer;text-decoration:none}
+.iconbtn:hover{background:rgba(255,255,255,.1)}
+.iconbtn.callb{background:var(--yel);color:#14191d;width:auto;padding:0 14px;gap:6px;display:flex;font-weight:700;font-size:15px}
+.weave{height:8px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14'%3E%3Crect width='28' height='14' fill='%23c8102e'/%3E%3Cpath d='M14 1L21 7L14 13L7 7Z M0 1L4 7L0 13Z M28 1L24 7L28 13Z' fill='%23140e0f'/%3E%3Cpath d='M14 4L17.5 7L14 10L10.5 7Z' fill='%23fff'/%3E%3C/svg%3E") repeat-x;background-size:16px 8px}
+.sheet{position:fixed;inset:60px 0 0;z-index:29;background:rgba(8,14,18,.5)}
+.sheet-in{background:var(--card);border-radius:0 0 22px 22px;padding:8px 16px 18px;max-height:calc(100% - 20px);overflow:auto;box-shadow:0 12px 24px rgba(0,0,0,.18)}
+.sheet-in a.item{display:block;padding:13px 4px;border-bottom:1px solid var(--line);text-decoration:none}
+.sheet-in a.item b{display:block;font-size:18px;font-weight:700}
+.sheet-in a.item span{font-size:14px;color:var(--mute)}
+.sheet-in .cta{margin-top:14px}
+.hero{position:relative;padding:22px 0 8px}
+.photo{position:absolute;left:0;right:0;top:0;height:330px;background:#0f5f86 url("bg.jpg") center 42%/cover no-repeat}
+.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,20,30,.62) 0%,rgba(5,20,30,.38) 45%,rgba(5,20,30,.1) 75%,var(--bg) 100%)}
+.hero-in{position:relative;display:grid;gap:18px}
+.copy{color:#fff;padding:6px 2px 0}
+h1{font-size:clamp(32px,8.4vw,52px);line-height:1.12;letter-spacing:.01em;font-weight:900;margin:0 0 8px;text-shadow:0 2px 16px rgba(0,0,0,.35);text-wrap:balance}
+.sub{font-size:16px;line-height:1.6;margin:0;max-width:30em;color:#eef5f8;text-shadow:0 1px 10px rgba(0,0,0,.45)}
+.card{background:var(--card);border-radius:22px;padding:16px;box-shadow:0 8px 28px rgba(8,30,45,.16)}
+.card h2{font-size:20px;margin:2px 4px 12px;font-weight:700}
+.route{position:relative;border:1.5px solid var(--line);border-radius:16px}
+.legs{position:relative}
+.legs::before{content:"";position:absolute;left:23px;top:40px;height:calc(100% - 80px);border-left:2px dotted var(--mute);opacity:.6}
+.leg{display:grid;grid-template-columns:30px minmax(0,1fr) 46px;align-items:center;min-height:66px;padding:0 6px 0 8px}
+.leg+.leg{border-top:1px solid var(--line)}
+.dot{justify-self:center;width:14px;height:14px}
+.dot.from{border-radius:50%;background:var(--yel);box-shadow:0 0 0 3px #14191d inset}
+.dot.to{border-radius:4px;background:var(--red)}
+.field{background:none;border:0;text-align:left;padding:10px 6px;cursor:pointer;display:block;width:100%;border-radius:10px}
+.field:hover{background:var(--soft)}
+.field small{display:block;font-size:13px;color:var(--mute);line-height:1.3}
+.field b{display:block;font-size:18px;font-weight:700;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.legbtn{width:42px;height:42px;border-radius:12px;border:0;background:var(--soft);display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.legbtn[aria-pressed=true]{background:var(--yel);color:#14191d}
+.picker{padding:12px 12px 14px;border-top:1px solid var(--line)}
+.picker p{margin:0 0 8px;font-size:14px;color:var(--mute)}
+.chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.chip{min-height:46px;border:1.5px solid var(--line);background:var(--card);border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;padding:4px}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.status{font-size:13px;color:var(--mute);margin:8px 4px 0;min-height:0}
+.opts{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;margin-top:12px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--soft);border-radius:12px;padding:3px}
+.seg button{min-height:42px;border:0;background:transparent;border-radius:10px;font-weight:700;cursor:pointer;color:var(--mute)}
+.seg button[aria-pressed=true]{background:var(--card);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.step{display:flex;align-items:center;background:var(--soft);border-radius:12px;padding:3px}
+.step button{width:42px;height:42px;border:0;background:transparent;border-radius:10px;font-size:22px;cursor:pointer}
+.step button:disabled{opacity:.3;cursor:default}
+.step output{min-width:3.4em;text-align:center;font-weight:700;white-space:nowrap}
+input[type=datetime-local],select{width:100%;min-height:46px;font:inherit;font-size:16px;border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--card);color:var(--ink);margin-top:10px}
+details.more,details.bdw,details.msgbox{margin-top:10px}
+details>summary{cursor:pointer;list-style:none;font-size:14px;color:var(--link);font-weight:500;padding:6px 4px;display:flex;align-items:center;gap:6px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-4px}
+details[open]>summary::after{transform:rotate(-135deg);margin-top:3px}
+.morein{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end;padding:4px}
+.morein select{margin-top:4px}
+.morein label.l{font-size:13px;color:var(--mute)}
+.check{display:flex;align-items:center;gap:8px;min-height:46px;font-weight:500;cursor:pointer;white-space:nowrap}
+.check input{width:22px;height:22px;accent-color:#c8102e}
+.quote{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-top:12px;padding:14px 4px 0;border-top:1px dashed var(--line)}
+.quote .ql{font-size:13px;color:var(--mute);display:block}
+.price{font:700 44px/1 "Barlow Condensed",sans-serif;white-space:nowrap;letter-spacing:.01em}
+.price small{font-size:22px;margin-right:3px;color:var(--mute)}
+.qr{text-align:right;font-size:14px;color:var(--mute);line-height:1.5}
+.qr b{color:var(--ink)}
+.tag{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:6px;font-size:12px;font-weight:700;background:var(--soft);color:var(--ink);white-space:nowrap}
+.tag.n{background:var(--red);color:#fff}
+.bd{width:100%;border-collapse:collapse;font-size:14px;margin:2px 0 4px}
+.bd td{padding:6px 4px;border-bottom:1px solid var(--line);color:var(--mute)}
+.bd td:last-child{text-align:right;white-space:nowrap;color:var(--ink);font-variant-numeric:tabular-nums}
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;border-radius:14px;background:var(--yel);color:#14191d;font-weight:700;font-size:18px;text-decoration:none;margin-top:14px;border:0;cursor:pointer;width:100%}
+.cta:hover{background:#ffd24d}
+.cta2{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+.btn2{display:flex;align-items:center;justify-content:center;gap:6px;min-height:46px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;color:var(--ink)}
+.btn2.line{background:#06c755;border-color:#06c755;color:#fff}
+.note{font-size:13px;color:var(--mute);margin:10px 4px 0}
+.msgbox pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.55 "Noto Sans TC",sans-serif;background:var(--soft);padding:10px 12px;border-radius:10px;margin:4px 0 0}
+.trust{list-style:none;margin:16px 0 0;padding:0 4px;display:flex;flex-wrap:wrap;gap:6px 18px}
+.trust li{font-size:14px;line-height:1.4;color:var(--mute);display:flex;gap:6px;align-items:center;white-space:nowrap}
+.trust svg{flex:none;margin-top:1px;color:var(--sea)}
+.sec{padding:clamp(36px,6vw,64px) 0}
+.sec.alt{background:var(--card)}
+h2.t{font-size:clamp(24px,5.6vw,34px);line-height:1.2;margin:0 0 8px;font-weight:700;text-wrap:balance}
+.lead{color:var(--mute);margin:0 0 18px;max-width:40em}
+.grid2{display:grid;gap:22px}
+.fig{position:relative;min-height:340px;border-radius:18px;overflow:hidden;background:var(--land)}
 .fig>svg{position:absolute;inset:0;width:100%;height:100%}
-figcaption{font-size:14px;color:var(--mute);margin-top:8px}
-#m .sea{fill:var(--sea)}
+figure{margin:0}
+figcaption{font-size:13px;color:var(--mute);margin-top:8px}
+#m .sea{fill:var(--seaf)}
 #m .sl{font-size:14px;font-weight:700;fill:var(--seaink);text-anchor:middle}
 #m .rd{stroke:var(--road);stroke-width:7;stroke-linecap:round}
 #m .rt{fill:none;stroke:var(--route);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
-#m .car{fill:#ffc21a;stroke:#1b1214;stroke-width:2.5}
-#m .pill{fill:var(--bg);stroke:var(--road);stroke-width:1.5}
+#m .car{fill:#ffc21a;stroke:#14191d;stroke-width:2.5}
+#m .pill{fill:var(--card);stroke:var(--road);stroke-width:1.5}
 #m .el{font-size:12.5px;fill:var(--ink);text-anchor:middle}
 #m .lb{font-size:15px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:var(--land);stroke-width:4px;stroke-linejoin:round}
 #m .fromt{fill:var(--fromt)}
 #m .tot{fill:var(--route)}
-#m .st{fill:var(--panel);stroke:var(--ink);stroke-width:3}
+#m .st{fill:var(--card);stroke:var(--ink);stroke-width:3}
 #m .st.from{fill:#ffc21a}
 #m .st.to{fill:#c8102e}
-#m .hit{fill:transparent}
 #m .st.hub{stroke-width:4}
+#m .hit{fill:transparent}
+#m .stop{cursor:pointer}
+#m .you{fill:#ffc21a;stroke:#14191d;stroke-width:3}
+#m .na{fill:var(--ink)}
+#m .nt{font-size:13px;font-weight:700;fill:var(--ink);text-anchor:middle}
 #m .zone{fill:rgba(255,194,26,.2)}
 #m .ring{fill:none;stroke:var(--ink);stroke-opacity:.4;stroke-width:1.5;stroke-dasharray:5 6}
 #m .rl{font-size:13px;font-weight:700;fill:var(--ink);text-anchor:middle;paint-order:stroke;stroke:var(--land);stroke-width:4px;stroke-linejoin:round}
-#m .stop{cursor:pointer}
-#m .you{fill:#ffc21a;stroke:#1b1214;stroke-width:3}
-#m .na{fill:var(--ink)}
-#m .nt{font-size:13px;font-weight:700;fill:var(--ink);text-anchor:middle}
-.stops{list-style:none;padding:0;margin:16px 0 0}
-.stops li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:10px 0;border-top:1px solid var(--line);align-items:center}
+.stops{list-style:none;padding:0;margin:0;background:var(--card);border-radius:18px;border:1px solid var(--line)}
+.stops li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:12px 16px;border-top:1px solid var(--line);align-items:center}
+.stops li:first-child{border-top:0}
 .stops b{font-size:17px;display:block}
 .stops span{color:var(--mute);font-size:14px}
 .stops .p{text-align:right;font-weight:700;white-space:nowrap}
 .stops .p a{display:block;font-weight:400;font-size:14px;color:var(--link)}
-.soft{background:var(--soft)}
-.fgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:40px;align-items:start}
-.mx{border-collapse:collapse;width:100%;font-size:15px;background:var(--panel);border-radius:14px;overflow:hidden}
+.scroll{overflow-x:auto}
+.mx{border-collapse:collapse;width:100%;font-size:15px;background:var(--card);border-radius:16px;overflow:hidden}
 .mx th,.mx td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-.mx thead th{font-size:14px;color:var(--mute)}
-.mx tbody th{text-align:left;padding-left:14px}
+.mx thead th{font-size:13px;color:var(--mute);font-weight:500}
+.mx tbody th{text-align:left;padding-left:14px;font-weight:700}
 .mx td{font-variant-numeric:tabular-nums;cursor:pointer}
-.mx td:hover{background:var(--panel2)}
+.mx td:hover{background:var(--soft)}
 .mx td.same{color:var(--mute)}
-.mx td.on{background:var(--yel);color:#1b1214;font-weight:900}
-.rules{margin:0}
-.rules div{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:12px;padding:11px 0;border-top:1px solid var(--line)}
-.rules dt{font-weight:900}
-.rules dd{margin:0}
-.rules b{white-space:nowrap}
-.info{background:var(--black);color:#f4ecea}
-.igrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:18px}
-.igrid h3{font-size:18px;margin:0 0 6px;color:var(--yel)}
-.igrid p{margin:0;color:#ddd0d0}
-.qgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;margin-top:10px}
+.mx td.on{background:var(--yel);color:#14191d;font-weight:700}
+.rules{margin:0;background:var(--card);border-radius:18px;border:1px solid var(--line);padding:4px 16px}
+.rules div{display:grid;grid-template-columns:6.2em minmax(0,1fr);gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.rules div:first-child{border-top:0}
+.rules dt{font-weight:700}
+.rules dd{margin:0;color:var(--mute)}
+.rules b{white-space:nowrap;color:var(--ink)}
+.info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.info div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
+.info svg{color:var(--sea)}
+.info h3{font-size:17px;margin:6px 0 4px}
+.info p{margin:0;font-size:15px;color:var(--mute)}
+.faq{display:grid;gap:0 32px}
 .q{border-top:1px solid var(--line)}
-.q summary{cursor:pointer;font-weight:700;font-size:17px;padding:13px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
-.q summary::-webkit-details-marker{display:none}
-.q summary::after{content:"+";font-size:22px;line-height:1;color:var(--link)}
-.q[open] summary::after{content:"−"}
-.q p{margin:0 0 16px;color:var(--mute)}
-.foot{background:var(--black);color:#ddd0d0;padding-block:28px}
-.fbar{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between;align-items:center}
-.fbar b{color:#fff;font-size:18px}
-.small{font-size:13px;color:#b9aaaa;margin:0;max-width:34em}
-.bar{display:none}
-@media(max-width:860px){.grid,.mapgrid,.fgrid{grid-template-columns:minmax(0,1fr)}.meter{position:static;order:-1}.igrid{grid-template-columns:repeat(2,minmax(0,1fr))}.fig{min-height:360px}}
-@media(max-width:600px){.links{order:3;width:100%;overflow-x:auto}.links a{flex:none}.qgrid,.igrid{grid-template-columns:minmax(0,1fr)}.mx{font-size:13px}.mx th,.mx td{padding:8px 5px}.panel{padding:16px}.row2{gap:10px}.chip{font-size:15px}
-.bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--meter);color:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));gap:12px;align-items:center;justify-content:space-between;box-shadow:0 -4px 16px rgba(0,0,0,.3)}
-.bar b{font:700 30px/1 "Barlow Condensed",sans-serif;color:var(--led)}
-.bar span{display:block;font-size:13px;color:#d5c8c8}
-.bar .btn{min-height:48px;font-size:16px;padding:8px 18px}
-body{padding-bottom:78px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+.q summary{font-size:17px;color:var(--ink);font-weight:700;padding:14px 2px;justify-content:space-between}
+.q p{margin:0 2px 16px;color:var(--mute)}
+.foot{background:var(--bar);color:#cfd9de;padding:26px 0 calc(26px + env(safe-area-inset-bottom,0px));font-size:15px}
+.foot b{color:#fff;font-size:18px}
+.foot .small{font-size:13px;color:#93a3ab;margin:10px 0 0}
+.fbar{display:flex;flex-wrap:wrap;gap:8px 30px;justify-content:space-between}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bar);color:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:12px;align-items:center;justify-content:space-between;transform:translateY(110%);transition:transform .25s}
+.bar.on{transform:none}
+.bar b{font:700 30px/1 "Barlow Condensed",sans-serif;color:var(--yel)}
+.bar span{display:block;font-size:13px;color:#b9c6cc}
+.bar .cta{margin:0;width:auto;padding:0 22px;min-height:48px;font-size:16px}
+@media(min-width:720px){.grid2{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:start}.faq{grid-template-columns:1fr 1fr}.info{grid-template-columns:repeat(4,minmax(0,1fr))}.fig{min-height:440px}}
+@media(min-width:960px){.links{display:flex}#menuBtn{display:none}.hero{padding:48px 0 40px}.photo{height:100%}.photo::after{background:linear-gradient(90deg,rgba(5,20,30,.68) 0%,rgba(5,20,30,.35) 50%,rgba(5,20,30,.15) 100%)}.hero-in{grid-template-columns:minmax(0,1fr) 440px;align-items:center;gap:40px}.sub{font-size:18px}.bar{display:none}}
+@media(prefers-reduced-motion:reduce){.bar{transition:none}}
 </style>
 </head>
 <body>
-<header class="nav">
-  <a class="brand" href="#book">
-    <svg width="44" height="28" viewBox="0 0 44 28" aria-hidden="true"><path d="M7 23L10.5 6Q11.3 3 14.5 3H29.5Q32.7 3 33.5 6L37 23Z" fill="#ffc21a"/><rect x="2" y="22" width="40" height="5" rx="2.5" fill="#ffc21a"/><text x="22" y="18" text-anchor="middle" font-size="10.5" font-weight="900" fill="#1b1214" font-family="Noto Sans TC,sans-serif">南澳</text></svg>
+<header class="appbar">
+  <a class="brand" href="#book" aria-label="南澳家鄉車">
+    <svg width="40" height="26" viewBox="0 0 44 28" aria-hidden="true"><path d="M7 23L10.5 6Q11.3 3 14.5 3H29.5Q32.7 3 33.5 6L37 23Z" fill="#ffc21a"/><rect x="2" y="22" width="40" height="5" rx="2.5" fill="#ffc21a"/><text x="22" y="18" text-anchor="middle" font-size="10.5" font-weight="900" fill="#14191d" font-family="Noto Sans TC,sans-serif">南澳</text></svg>
     <span>南澳家鄉車</span>
   </a>
-  <nav class="links"><a href="#map">服務範圍</a><a href="#fares">車資表</a><a href="#info">服務資訊</a><a href="#faq">常見問題</a></nav>
-  <a class="callpill" href="tel:0912345678"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>0912-345-678</a>
+  <nav class="links" aria-label="主選單"><a href="#book">叫車</a><a href="#map">服務範圍</a><a href="#fares">車資表</a><a href="#info">服務資訊</a><a href="#faq">常見問題</a></nav>
+  <a class="iconbtn callb" href="tel:0912345678" aria-label="打電話叫車 0912-345-678"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>叫車</a>
+  <button class="iconbtn" id="menuBtn" type="button" aria-label="開啟選單" aria-expanded="false" aria-controls="menu"><svg id="menuIco" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
 </header>
 <div class="weave" aria-hidden="true"></div>
+<div class="sheet" id="menu" hidden>
+  <nav class="sheet-in" aria-label="選單">
+    <a class="item" href="#book"><b>叫車</b><span>選上下車地點，馬上看車資</span></a>
+    <a class="item" href="#map"><b>服務範圍</b><span>五個村子和火車站的路線圖</span></a>
+    <a class="item" href="#fares"><b>車資表</b><span>各村之間的車資一覽</span></a>
+    <a class="item" href="#rules"><b>收費方式</b><span>起跳、續程、夜間和優惠</span></a>
+    <a class="item" href="#info"><b>服務資訊</b><span>服務時間、車輛、付款</span></a>
+    <a class="item" href="#faq"><b>常見問題</b><span>怎麼叫車、可不可以預約</span></a>
+    <a class="cta" href="tel:0912345678"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>打電話叫車 0912-345-678</a>
+  </nav>
+</div>
 
 <main>
-<section class="band hero" id="book">
-  <div class="wrap">
-    <h1>在南澳，也叫得到車</h1>
-    <p class="lede">以南澳火車站為中心，接送南澳村、碧候、武塔、金岳和金洋。選好上下車地點就能看到車資，再打電話或傳 LINE 給司機。</p>
-    <div class="grid">
-      <form class="panel" id="f">
-        <fieldset>
-          <legend>上車地點</legend>
-          <button type="button" class="gps" id="gps" aria-pressed="false"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.1 7-12.5a7 7 0 0 0-14 0C5 14.9 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.6" fill="currentColor"/></svg>用 GPS 定位我的位置</button>
-          <div class="chips" id="from"></div>
-          <p class="status" id="gpsMsg" aria-live="polite">或直接選村子，也可以點下方地圖上的站點。</p>
-        </fieldset>
-        <fieldset>
-          <legend>下車地點</legend>
-          <div class="chips" id="to"></div>
-        </fieldset>
-        <div class="row2">
-          <div><span class="lab">什麼時候</span>
-            <div class="seg"><button type="button" data-w="now">立即</button><button type="button" data-w="later">預約</button></div>
-            <input type="datetime-local" id="dt" aria-label="預約時間" hidden>
-          </div>
-          <div><span class="lab">乘客人數</span>
-            <div class="step"><button type="button" id="minus" aria-label="減少一位">−</button><output id="pax">2</output><button type="button" id="plus" aria-label="增加一位">+</button></div>
-          </div>
+<section class="hero">
+  <div class="photo" aria-hidden="true"></div>
+  <div class="wrap hero-in">
+    <div class="copy">
+      <h1>在南澳，也叫得到車</h1>
+      <p class="sub">從南澳火車站出發，五個村子都到。上車前就知道車資，打通電話司機就來。</p>
+    </div>
+    <div class="card" id="book">
+      <h2>你要去哪裡？</h2>
+      <div class="route">
+        <div class="legs">
+        <div class="leg">
+          <span class="dot from" aria-hidden="true"></span>
+          <button class="field" id="fFrom" type="button" aria-expanded="false" aria-controls="picker"><small>上車地點</small><b id="fromTxt">南澳火車站</b></button>
+          <button class="legbtn" id="gps" type="button" aria-pressed="false" aria-label="用 GPS 定位我的位置"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2" fill="currentColor"/><circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
         </div>
-        <div class="row2">
-          <div><label class="lab" for="wait">需要司機等候</label>
-            <select id="wait"><option value="0">不用等</option><option value="10">10 分鐘</option><option value="20">20 分鐘</option><option value="30">30 分鐘</option><option value="45">45 分鐘</option><option value="60">1 小時</option></select>
-          </div>
+        <div class="leg">
+          <span class="dot to" aria-hidden="true"></span>
+          <button class="field" id="fTo" type="button" aria-expanded="false" aria-controls="picker"><small>下車地點</small><b id="toTxt">碧候村</b></button>
+          <button class="legbtn" id="swap" type="button" aria-label="上下車對調"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v15M8 4L4.5 7.5M8 4l3.5 3.5M16 20V5M16 20l-3.5-3.5M16 20l3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+        </div>
+        </div>
+        <div class="picker" id="picker" hidden><p id="pkT">選擇上車地點</p><div class="chips" id="chips"></div></div>
+      </div>
+      <p class="status" id="gpsMsg" aria-live="polite"></p>
+      <div class="opts">
+        <div class="seg" role="group" aria-label="什麼時候"><button type="button" data-w="now">現在出發</button><button type="button" data-w="later">預約</button></div>
+        <div class="step" role="group" aria-label="乘客人數"><button type="button" id="minus" aria-label="減少一位">−</button><output id="pax">1 人</output><button type="button" id="plus" aria-label="增加一位">+</button></div>
+      </div>
+      <input type="datetime-local" id="dt" aria-label="預約時間" hidden>
+      <details class="more"><summary>更多選項：司機等候、長者優惠</summary>
+        <div class="morein">
+          <div><label class="l" for="wait">需要司機等候（看診、買東西）</label>
+            <select id="wait"><option value="0">不用等</option><option value="10">10 分鐘</option><option value="20">20 分鐘</option><option value="30">30 分鐘</option><option value="45">45 分鐘</option><option value="60">1 小時</option></select></div>
           <label class="check"><input type="checkbox" id="senior">長者／身障 9 折</label>
         </div>
-      </form>
-
-      <aside class="meter" aria-live="polite">
-        <div class="mtop"><span>預估車資</span><span class="lamp" id="lamp">日間</span></div>
-        <div class="screen"><small>NT$</small><b id="total">160</b></div>
-        <p class="trip" id="trip">碧候村 → 南澳火車站</p>
-        <div class="mrow"><span>距離 <b id="km">4.0</b> 公里</span><span>車程約 <b id="min">9</b> 分鐘</span></div>
-        <table class="bd"><tbody id="bd"></tbody></table>
-        <div class="acts">
-          <a class="btn y" href="tel:0912345678"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>打電話叫車 0912-345-678</a>
-          <a class="btn l" id="line" href="https://line.me/R/msg/text/" target="_blank" rel="noopener">傳 LINE</a>
-          <a class="btn o" id="sms" href="sms:0912345678">傳簡訊</a>
-          <button class="btn o" id="copy" type="button">複製訊息</button>
-        </div>
-        <p class="note" id="note"></p>
-        <details class="msgbox" id="msgbox"><summary>看叫車訊息內容</summary><pre id="msg"></pre></details>
-      </aside>
+      </details>
+      <div class="quote" aria-live="polite">
+        <div><span class="ql">預估車資</span><span class="price"><small>NT$</small><span id="total">160</span></span></div>
+        <div class="qr"><b id="km">4.0</b> 公里・約 <b id="min">9</b> 分鐘<span class="tag" id="lamp">日間</span><br><span id="trip">南澳火車站 → 碧候村</span></div>
+      </div>
+      <details class="bdw"><summary>車資明細</summary><table class="bd"><tbody id="bd"></tbody></table></details>
+      <a class="cta" id="callMain" href="tel:0912345678"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>打電話叫車 0912-345-678</a>
+      <div class="cta2">
+        <a class="btn2 line" id="line" href="https://line.me/R/msg/text/" target="_blank" rel="noopener">傳 LINE</a>
+        <a class="btn2" id="sms" href="sms:0912345678">傳簡訊</a>
+        <button class="btn2" id="copy" type="button">複製訊息</button>
+      </div>
+      <p class="note" id="note"></p>
+      <details class="msgbox" id="msgbox"><summary>看叫車訊息內容</summary><pre id="msg"></pre></details>
     </div>
+  </div>
+  <div class="wrap">
+    <ul class="trust">
+      <li><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>說好的價格就是車資</li>
+      <li><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>在地司機，熟悉部落道路</li>
+      <li><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>長者、身障 9 折</li>
+    </ul>
   </div>
 </section>
 
-<section class="band" id="map">
-  <div class="wrap mapgrid">
-    <figure>
-      <div class="fig"><svg id="m" role="img" aria-label="南澳五村與火車站的路線示意圖"></svg></div>
-      <figcaption>以南澳火車站為圓心，各村離圓心的距離就是離車站的道路里程（估計值）；黃色圓內免派車費。點站點可設為上車地點。</figcaption>
-    </figure>
-    <div>
-      <h2>從火車站出發，五個村子都到</h2>
-      <p>車子平常在南澳火車站等候，<span id="far"></span>。範圍以外的地方請來電包車。</p>
+<section class="sec alt" id="map">
+  <div class="wrap">
+    <h2 class="t">從火車站出發，五個村子都到</h2>
+    <p class="lead">車子平常在南澳火車站等候，<span id="far"></span>。範圍以外的地方請來電包車。</p>
+    <div class="grid2">
+      <figure>
+        <div class="fig"><svg id="m" role="img" aria-label="以南澳火車站為中心的路線示意圖"></svg></div>
+        <figcaption>以火車站為圓心，各村離圓心的距離就是道路里程（估計值）；黃色圓內免派車費。點站點可設為上車地點。</figcaption>
+      </figure>
       <ul class="stops" id="stops"></ul>
     </div>
   </div>
 </section>
 
-<section class="band soft" id="fares">
-  <div class="wrap fgrid">
+<section class="sec" id="fares">
+  <div class="wrap grid2">
     <div>
-      <h2>車資一覽表</h2>
-      <p>日間單趟車資（元），已含派車費。點任一格可帶入上方試算。</p>
+      <h2 class="t">車資表</h2>
+      <p class="lead">日間單趟車資（元），已含派車費。點任一格可以帶入上面的叫車。</p>
       <div class="scroll"><table class="mx" id="mx"></table></div>
     </div>
-    <div>
-      <h2>收費方式</h2>
-      <dl class="rules" id="rules"></dl>
+    <div id="rules-box">
+      <h2 class="t" id="rules">收費方式</h2>
+      <p class="lead">上車前說好的金額就是車資。</p>
+      <dl class="rules" id="rulesList"></dl>
     </div>
   </div>
 </section>
 
-<section class="band info" id="info">
+<section class="sec alt" id="info">
   <div class="wrap">
-    <h2>服務資訊</h2>
-    <div class="igrid">
-      <div><h3>服務時間</h3><p>每天 06:00–23:00，車子平常停在南澳火車站，配合火車班次接送。夜間和清晨請前一天預約。</p></div>
-      <div><h3>車輛</h3><p>五人座轎車，一趟最多 4 位乘客。後車廂可放 2 件大行李或一台折疊輪椅。</p></div>
-      <div><h3>付款</h3><p>下車時付現金或轉帳，金額以上車前說好的為準。</p></div>
-      <div><h3>區外包車</h3><p>蘇澳、羅東、宜蘭市、醫院看診和花蓮和平，請來電報價。</p></div>
+    <h2 class="t">服務資訊</h2>
+    <div class="info">
+      <div><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg><h3>服務時間</h3><p>每天 06:00–23:00，車子平常停在南澳火車站，配合火車班次接送。夜間和清晨請前一天預約。</p></div>
+      <div><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15l1.6-5.2A2 2 0 0 1 7.5 8.4h9a2 2 0 0 1 1.9 1.4L20 15v3h-2.5M4 15v3h2.5M4 15h16" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/><circle cx="7.5" cy="18" r="1.8" fill="currentColor"/><circle cx="16.5" cy="18" r="1.8" fill="currentColor"/></svg><h3>車輛</h3><p>五人座轎車，一趟最多 4 位乘客。後車廂可放 2 件大行李或一台折疊輪椅。</p></div>
+      <div><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/></svg><h3>付款</h3><p>下車時付現金或轉帳，金額以上車前說好的為準。</p></div>
+      <div><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5a7 7 0 0 0-14 0C5 14.8 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.4" fill="currentColor"/></svg><h3>區外包車</h3><p>蘇澳、羅東、宜蘭市、醫院看診和花蓮和平，請來電報價。</p></div>
     </div>
   </div>
 </section>
 
-<section class="band" id="faq">
+<section class="sec" id="faq">
   <div class="wrap">
-    <h2>常見問題</h2>
-    <div class="qgrid">
+    <h2 class="t">常見問題</h2>
+    <div class="faq">
       <div>
         <details class="q"><summary>怎麼叫車？</summary><p>選好上車和下車地點，按「打電話叫車」直接找司機；或按「傳 LINE」，訊息已經寫好上下車地點和車資，選司機的聊天室送出就好。</p></details>
-        <details class="q"><summary>GPS 定位有什麼用？</summary><p>按「用 GPS 定位」後，叫車訊息會附上你所在位置的地圖連結，司機可以直接開到門口。手機需要先允許瀏覽器使用位置。</p></details>
+        <details class="q"><summary>GPS 定位有什麼用？</summary><p>按上車地點旁的定位鈕，叫車訊息會附上你所在位置的地圖連結，司機可以直接開到門口。手機需要先允許瀏覽器使用位置。</p></details>
         <details class="q"><summary>車資會跟試算不一樣嗎？</summary><p>上車前說好的金額就是車資。中途要多停一個地方或臨時改目的地，再依里程另外計算。</p></details>
         <details class="q"><summary>可以預約早班火車嗎？</summary><p>可以，建議前一天預約。告訴司機車次和上車地點，司機會提早到。</p></details>
       </div>
@@ -288,14 +336,14 @@ body{padding-bottom:78px}}
 </main>
 
 <div class="weave" aria-hidden="true"></div>
-<footer class="band foot">
-  <div class="wrap fbar">
-    <div><b>南澳家鄉車</b><br>電話 0912-345-678（每天 06:00–23:00）</div>
+<footer class="foot">
+  <div class="wrap">
+    <div class="fbar"><div><b>南澳家鄉車</b><br>叫車電話 0912-345-678（每天 06:00–23:00）</div><div>宜蘭縣南澳鄉・以南澳火車站為中心</div></div>
     <p class="small">示意資料：電話號碼、車型、站點座標與各段道路里程為範例，正式使用前請換成實際資料。</p>
   </div>
 </footer>
 
-<div class="bar"><div><b id="barTotal">NT$160</b><span id="barSub"></span></div><a class="btn y" href="tel:0912345678">打電話叫車</a></div>
+<div class="bar" id="bar" aria-hidden="true"><div><b id="barTotal">NT$160</b><span id="barSub"></span></div><a class="cta" href="tel:0912345678" tabindex="-1">打電話叫車</a></div>
 
 <script>
 {
@@ -332,11 +380,11 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const tel = C.phone.replace(/\D/g, '');
 const pad = n => String(n).padStart(2, '0');
 const svg = $('m');
-let cur = null, msg = '';
-let st = {from:'station', to:'bihou', gps:null, when:'now', dt:'', pax:2, wait:0, senior:false};
+let cur = null, msg = '', pk = '';
+let st = {from:'station', to:'bihou', gps:null, when:'now', dt:'', pax:1, wait:0, senior:false};
 try {
   const s = JSON.parse(localStorage.getItem('nanao-ride') || 'null');
-  if (s && by[s.from] && by[s.to]) Object.assign(st, {from:s.from, to:s.to, pax:Math.min(C.maxPax, s.pax || 2), senior:!!s.senior});
+  if (s && by[s.from] && by[s.to]) Object.assign(st, {from:s.from, to:s.to, pax:Math.min(C.maxPax, s.pax || 1), senior:!!s.senior});
 } catch (e) {}
 
 function sp(a, b) {
@@ -476,28 +524,40 @@ function draw() {
   svg.innerHTML = h;
 }
 
+
+function renderPicker() {
+  $('picker').hidden = !pk;
+  $('fFrom').setAttribute('aria-expanded', String(pk === 'from'));
+  $('fTo').setAttribute('aria-expanded', String(pk === 'to'));
+  if (!pk) return;
+  $('pkT').textContent = pk === 'from' ? '選擇上車地點' : '選擇下車地點';
+  const curId = pk === 'from' ? (st.gps ? '' : st.from) : st.to;
+  $('chips').innerHTML = S.map(s => `<button type="button" class="chip" data-id="${s.id}" aria-pressed="${s.id === curId}">${s.name}</button>`).join('');
+}
+
 function update() {
   const fromStop = st.gps ? st.gps.near.s : by[st.from];
   const extra = st.gps ? st.gps.near.d * C.roadFactor : 0;
   const d = tripDate();
   const p = price({fromId:fromStop.id, toId:st.to, extra, hour:d.getHours(), wait:st.wait, senior:st.senior});
   cur = {p, fromStop};
-  document.querySelectorAll('#from .chip').forEach(b => b.setAttribute('aria-pressed', String(!st.gps && b.dataset.id === st.from)));
-  document.querySelectorAll('#to .chip').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.id === st.to)));
+  const fromName = st.gps ? `目前位置（${fromStop.name}附近）` : fromStop.name;
+  $('fromTxt').textContent = fromName;
+  $('toTxt').textContent = by[st.to].name;
   $('gps').setAttribute('aria-pressed', String(!!st.gps));
+  renderPicker();
   document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.w === st.when)));
   $('dt').hidden = st.when !== 'later';
-  $('pax').textContent = st.pax;
+  $('pax').textContent = st.pax + ' 人';
   $('minus').disabled = st.pax <= 1;
   $('plus').disabled = st.pax >= C.maxPax;
 
-  const fromName = st.gps ? `目前位置（${fromStop.name}附近）` : fromStop.name;
   $('total').textContent = p.total;
   $('km').textContent = p.km.toFixed(1);
   $('min').textContent = p.min;
   $('trip').textContent = `${fromName} → ${by[st.to].name}`;
   $('lamp').textContent = p.night ? `夜間 +${Math.round(C.nightRate * 100)}%` : '日間';
-  $('lamp').className = 'lamp' + (p.night ? ' n' : '');
+  $('lamp').className = 'tag' + (p.night ? ' n' : '');
   const rows = [
     [`起跳（含 ${C.baseKm} 公里）`, C.base],
     [p.short ? `短程（${C.baseKm} 公里內）` : `續程 ${(p.km - C.baseKm).toFixed(1)} 公里 × ${C.perKm} 元`, p.run],
@@ -512,10 +572,10 @@ function update() {
   if (st.gps && st.gps.near.d > C.areaKm) notes.push(`你目前離${fromStop.name}約 ${st.gps.near.d.toFixed(1)} 公里，超出服務範圍，請先來電詢問。`);
   if (st.when === 'later' && d < new Date()) notes.push('預約時間已經過了，請重新選擇。');
   if (p.night && st.when === 'now') notes.push('現在是夜間時段，請先來電確認能否出車。');
-  if (!notes.length) notes.push('上車前說好的金額就是車資；中途加停靠點另外計算。');
   $('note').textContent = notes.join(' ');
+  $('note').hidden = !notes.length;
 
-  const timeTxt = st.when === 'now' ? '立即' : `預約 ${d.getMonth() + 1}/${d.getDate()}（週${'日一二三四五六'[d.getDay()]}）${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const timeTxt = st.when === 'now' ? '現在出發' : `預約 ${d.getMonth() + 1}/${d.getDate()}（週${'日一二三四五六'[d.getDay()]}）${pad(d.getHours())}:${pad(d.getMinutes())}`;
   const lines = ['【南澳家鄉車】叫車', `上車：${fromName}`];
   if (st.gps) lines.push(`定位：https://www.google.com/maps?q=${st.gps.lat.toFixed(5)},${st.gps.lng.toFixed(5)}`);
   lines.push(`下車：${by[st.to].name}`, `時間：${timeTxt}`, `人數：${st.pax} 人`);
@@ -528,36 +588,37 @@ function update() {
   $('line').href = 'https://line.me/R/msg/text/?' + enc;
   $('sms').href = `sms:${tel}?&body=${enc}`;
   $('barTotal').textContent = 'NT$' + p.total;
-  $('barSub').textContent = `${p.km.toFixed(1)} 公里 · 約 ${p.min} 分鐘`;
+  $('barSub').textContent = `${p.km.toFixed(1)} 公里・約 ${p.min} 分鐘`;
   document.querySelectorAll('#mx td').forEach(td => td.classList.toggle('on', !st.gps && td.dataset.f === st.from && td.dataset.t === st.to));
   draw();
   try { localStorage.setItem('nanao-ride', JSON.stringify({from:st.from, to:st.to, pax:st.pax, senior:st.senior})); } catch (e) {}
 }
 
-// 站點按鈕
-for (const [el, key] of [[$('from'), 'from'], [$('to'), 'to']]) {
-  el.innerHTML = S.map(s => `<button type="button" class="chip" data-id="${s.id}">${s.name}</button>`).join('');
-  el.addEventListener('click', e => {
-    const b = e.target.closest('.chip');
-    if (!b) return;
-    st[key] = b.dataset.id;
-    if (key === 'from') { st.gps = null; $('gpsMsg').textContent = `上車地點：${by[st.from].name}`; }
-    update();
-  });
-}
+// 上下車選擇
+$('fFrom').addEventListener('click', () => { pk = pk === 'from' ? '' : 'from'; renderPicker(); });
+$('fTo').addEventListener('click', () => { pk = pk === 'to' ? '' : 'to'; renderPicker(); });
+$('chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  if (pk === 'from') { st.from = b.dataset.id; st.gps = null; $('gpsMsg').textContent = ''; }
+  else st.to = b.dataset.id;
+  pk = ''; update();
+});
+$('swap').addEventListener('click', () => {
+  if (st.gps) { st.from = st.gps.near.s.id; st.gps = null; $('gpsMsg').textContent = ''; }
+  [st.from, st.to] = [st.to, st.from]; pk = ''; update();
+});
 // 車資表
 $('mx').innerHTML = `<thead><tr><th>出發＼到達</th>${S.map(s => `<th>${s.short}</th>`).join('')}</tr></thead><tbody>` +
   S.map(a => `<tr><th>${a.name}</th>${S.map(b => `<td data-f="${a.id}" data-t="${b.id}"${a.id === b.id ? ' class="same"' : ''}>${day(a.id, b.id).total}</td>`).join('')}</tr>`).join('') + '</tbody>';
 $('mx').addEventListener('click', e => {
-  const td = e.target.closest('td');
-  if (!td) return;
-  st.from = td.dataset.f; st.to = td.dataset.t; st.gps = null;
-  $('gpsMsg').textContent = `上車地點：${by[st.from].name}`;
+  const td = e.target.closest('td'); if (!td) return;
+  st.from = td.dataset.f; st.to = td.dataset.t; st.gps = null; pk = '';
+  $('gpsMsg').textContent = '';
   update();
   $('book').scrollIntoView({behavior:reduce ? 'auto' : 'smooth'});
 });
 // 收費方式
-$('rules').innerHTML = [
+$('rulesList').innerHTML = [
   ['起跳', `<b>${C.base} 元</b>，含前 ${C.baseKm} 公里`],
   ['續程', `每公里 <b>${C.perKm} 元</b>`],
   ['派車', `車子從${by[C.home].name}出發，${C.dispFree} 公里內免費；超過的部分每公里 <b>${C.dispPer} 元</b>（目前只有${S.filter(s => sp(C.home, s.id).km > C.dispFree).map(s => s.name).join('、') || '區外'}上車會用到）`],
@@ -565,7 +626,7 @@ $('rules').innerHTML = [
   ['等候', `前 ${C.waitFree} 分鐘免費，之後每 5 分鐘 <b>${C.waitPer5} 元</b>`],
   ['長者／身障', `65 歲以上或持身心障礙證明 <b>${Math.round(C.senior * 10)} 折</b>`],
   ['春節', '除夕到初五，每趟加收 <b>50 元</b>'],
-  ['金額', '以 10 元為單位四捨五入；上車前說好的金額就是車資']
+  ['金額', '以 10 元為單位四捨五入']
 ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
 // 服務範圍清單
 {
@@ -582,32 +643,31 @@ $('stops').innerHTML = S.map(s => {
 // GPS
 $('gps').addEventListener('click', () => {
   const m = $('gpsMsg');
-  if (!('geolocation' in navigator)) { m.textContent = '這個瀏覽器不支援定位，請直接選村子或點地圖上的站點。'; return; }
+  if (st.gps) { st.from = st.gps.near.s.id; st.gps = null; m.textContent = ''; update(); return; }
+  if (!('geolocation' in navigator)) { m.textContent = '這個瀏覽器不支援定位，請點「上車地點」選村子。'; return; }
   m.textContent = '定位中…';
   try {
     navigator.geolocation.getCurrentPosition(pos => {
       const g = {lat:pos.coords.latitude, lng:pos.coords.longitude};
       g.near = nearest(g);
-      st.gps = g;
+      st.gps = g; pk = '';
       m.textContent = g.near.d > C.areaKm
         ? `已定位，但不在服務範圍內（離${g.near.s.name}約 ${g.near.d.toFixed(1)} 公里）。`
-        : `已定位：在${g.near.s.name}附近約 ${Math.max(.1, g.near.d).toFixed(1)} 公里。叫車訊息會附上你的位置連結。`;
+        : `已定位：在${g.near.s.name}附近，叫車訊息會附上你的位置。`;
       update();
     }, () => {
-      m.textContent = '沒辦法取得定位：可能沒有允許位置權限，或這個畫面不開放定位。請直接選村子，或點地圖上的站點。';
+      m.textContent = '沒辦法定位：請允許瀏覽器使用位置，或點「上車地點」直接選村子。';
     }, {enableHighAccuracy:true, timeout:10000, maximumAge:60000});
-  } catch (e) { m.textContent = '這個畫面不開放定位，請直接選村子。'; }
+  } catch (e) { m.textContent = '這個畫面不開放定位，請點「上車地點」選村子。'; }
 });
 svg.addEventListener('click', e => {
-  const g = e.target.closest('.stop');
-  if (!g) return;
-  st.from = g.dataset.id; st.gps = null;
+  const g = e.target.closest('.stop'); if (!g) return;
+  st.from = g.dataset.id; st.gps = null; pk = '';
   $('gpsMsg').textContent = `上車地點：${by[st.from].name}`;
   update();
 });
 document.querySelector('.seg').addEventListener('click', e => {
-  const b = e.target.closest('button');
-  if (!b) return;
+  const b = e.target.closest('button'); if (!b) return;
   st.when = b.dataset.w;
   if (st.when === 'later' && !st.dt) { st.dt = defDT(); $('dt').value = st.dt; }
   update();
@@ -620,7 +680,6 @@ $('wait').value = String(st.wait);
 $('wait').addEventListener('change', e => { st.wait = +e.target.value; update(); });
 $('senior').checked = st.senior;
 $('senior').addEventListener('change', e => { st.senior = e.target.checked; update(); });
-$('f').addEventListener('submit', e => e.preventDefault());
 $('copy').addEventListener('click', () => {
   const btn = $('copy');
   const done = () => { btn.textContent = '已複製'; setTimeout(() => { btn.textContent = '複製訊息'; }, 1600); };
@@ -632,6 +691,25 @@ $('copy').addEventListener('click', () => {
   };
   try { navigator.clipboard.writeText(msg).then(done, fail); } catch (e) { fail(); }
 });
+// 選單
+const menu = $('menu'), menuBtn = $('menuBtn');
+const icoOpen = '<path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>';
+const icoClose = '<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>';
+function setMenu(open) {
+  menu.hidden = !open;
+  menuBtn.setAttribute('aria-expanded', String(open));
+  menuBtn.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+  $('menuIco').innerHTML = open ? icoClose : icoOpen;
+}
+menuBtn.addEventListener('click', () => setMenu(menu.hidden));
+menu.addEventListener('click', e => { if (e.target === menu || e.target.closest('a')) setMenu(false); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { setMenu(false); if (pk) { pk = ''; renderPicker(); } } });
+// 叫車按鈕捲出畫面時，底部顯示車資列
+try {
+  const bar = $('bar');
+  const io = new IntersectionObserver(([en]) => { const show = !en.isIntersecting && en.boundingClientRect.top < 0; bar.classList.toggle('on', show); bar.setAttribute('aria-hidden', String(!show)); });
+  io.observe($('callMain'));
+} catch (e) {}
 const ro = new ResizeObserver(() => draw());
 ro.observe(svg);
 update();
