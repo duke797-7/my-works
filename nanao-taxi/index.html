@@ -11,7 +11,7 @@
 /* VOICE everyday service for neighbours: warm, plain, sure of itself
    IDEA a taxi fare meter and roof sign, trimmed with Atayal diamond weave
    PICTURE the live meter (big amber digits) beside the booking form; a route map of the six stops below
-   COLOUR Atayal red ground, ink black, white panels, taxi yellow for pickup and call actions
+   COLOUR Nan'ao coast photo behind the first screen, Atayal red weave and accents, ink black, white panels, taxi yellow for call actions
    TYPE Noto Sans TC 900/700/400 + Barlow Condensed for figures
    LAYOUT laptop: title, then form left | sticky meter right; phone: title, meter, form, map, slim fare bar */
 :root{color-scheme:light;--bg:#fff;--ink:#1b1214;--mute:#66585a;--line:#e6dbda;--red:#c8102e;--panel:#fff;--panel2:#faf5f4;--soft:#f6efed;--yel:#ffc21a;--meter:#171112;--led:#ffb81c;--land:#f4f2ea;--land2:#dce7d3;--sea:#bcdff2;--seaink:#2b6c93;--road:#cfc5be;--route:#c8102e;--black:#150f10;--link:#b00d28;--fromt:#8a5f00}
@@ -33,7 +33,10 @@ h2{font-size:clamp(26px,3vw,36px);line-height:1.1;letter-spacing:-.02em;font-wei
 .links a:hover{color:var(--yel)}
 .callpill{margin-left:auto;display:flex;align-items:center;gap:6px;background:var(--yel);color:#1b1214;font-weight:700;text-decoration:none;border-radius:999px;padding:9px 16px;white-space:nowrap}
 .weave{height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14'%3E%3Crect width='28' height='14' fill='%23c8102e'/%3E%3Cpath d='M14 1L21 7L14 13L7 7Z M0 1L4 7L0 13Z M28 1L24 7L28 13Z' fill='%23140e0f'/%3E%3Cpath d='M14 4L17.5 7L14 10L10.5 7Z' fill='%23fff'/%3E%3Ccircle cx='14' cy='7' r='1.1' fill='%23c8102e'/%3E%3C/svg%3E") repeat-x;background-size:28px 14px}
-.hero{background:var(--red);color:#fff}
+.hero{position:relative;color:#fff;background:#0f5f86 url("bg.jpg") center top/100% auto no-repeat}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,24,38,.62) 0,rgba(6,24,38,.3) 220px,rgba(6,24,38,.12) 320px,rgba(6,24,38,.12) 100%),linear-gradient(180deg,rgba(15,95,134,0) calc(75vw - 140px),#0f5f86 75vw)}
+.hero>.wrap{position:relative}
+.hero h1,.hero .lede{text-shadow:0 2px 14px rgba(0,0,0,.45)}
 .lede{font-size:17px;max-width:40em;margin:0 0 24px}
 .grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:20px;align-items:start}
 .panel{background:var(--panel);color:var(--ink);border-radius:18px;padding:20px}
