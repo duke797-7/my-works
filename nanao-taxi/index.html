@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>南澳家鄉車</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday service for neighbours: warm, plain, sure of itself
+   IDEA a taxi fare meter and roof sign, trimmed with Atayal diamond weave
+   PICTURE the live meter (big amber digits) beside the booking form; a route map of the six stops below
+   COLOUR Atayal red ground, ink black, white panels, taxi yellow for pickup and call actions
+   TYPE Noto Sans TC 900/700/400 + Barlow Condensed for figures
+   LAYOUT laptop: title, then form left | sticky meter right; phone: title, meter, form, map, slim fare bar */
+:root{color-scheme:light;--bg:#fff;--ink:#1b1214;--mute:#66585a;--line:#e6dbda;--red:#c8102e;--panel:#fff;--panel2:#faf5f4;--soft:#f6efed;--yel:#ffc21a;--meter:#171112;--led:#ffb81c;--land:#f4f2ea;--land2:#dce7d3;--sea:#bcdff2;--seaink:#2b6c93;--road:#cfc5be;--route:#c8102e;--black:#150f10;--link:#b00d28;--fromt:#8a5f00}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--bg:#150f10;--ink:#f4ecea;--mute:#b9aaaa;--line:#3b2d2f;--red:#9e0d25;--panel:#211819;--panel2:#2a2022;--soft:#1c1415;--meter:#0b0809;--land:#24211c;--land2:#1a2a1f;--sea:#123248;--seaink:#8cc4e8;--road:#5b504c;--route:#ff4d5e;--black:#0b0809;--link:#ff7a88;--fromt:#ffc21a}}
+:root[data-theme=dark]{color-scheme:dark;--bg:#150f10;--ink:#f4ecea;--mute:#b9aaaa;--line:#3b2d2f;--red:#9e0d25;--panel:#211819;--panel2:#2a2022;--soft:#1c1415;--meter:#0b0809;--land:#24211c;--land2:#1a2a1f;--sea:#123248;--seaink:#8cc4e8;--road:#5b504c;--route:#ff4d5e;--black:#0b0809;--link:#ff7a88;--fromt:#ffc21a}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;overflow-x:clip}
+a{color:inherit}
+.band{padding-block:clamp(28px,4vw,60px);padding-left:max(5vw,16px,env(safe-area-inset-left,0px));padding-right:max(5vw,16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1240px;margin:0 auto}
+.scroll{overflow-x:auto}
+h1{font-size:clamp(32px,4.6vw,52px);line-height:1.08;letter-spacing:-.02em;font-weight:900;margin:0 0 10px;text-wrap:balance}
+h2{font-size:clamp(26px,3vw,36px);line-height:1.1;letter-spacing:-.02em;font-weight:900;margin:0 0 10px;text-wrap:balance}
+.nav{background:var(--black);color:#fff;display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px;padding:10px max(5vw,16px)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px;text-decoration:none;color:#fff}
+.links{display:flex;gap:4px}
+.links a{color:#efe6e4;text-decoration:none;padding:10px 8px;font-size:15px;white-space:nowrap}
+.links a:hover{color:var(--yel)}
+.callpill{margin-left:auto;display:flex;align-items:center;gap:6px;background:var(--yel);color:#1b1214;font-weight:700;text-decoration:none;border-radius:999px;padding:9px 16px;white-space:nowrap}
+.weave{height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14'%3E%3Crect width='28' height='14' fill='%23c8102e'/%3E%3Cpath d='M14 1L21 7L14 13L7 7Z M0 1L4 7L0 13Z M28 1L24 7L28 13Z' fill='%23140e0f'/%3E%3Cpath d='M14 4L17.5 7L14 10L10.5 7Z' fill='%23fff'/%3E%3Ccircle cx='14' cy='7' r='1.1' fill='%23c8102e'/%3E%3C/svg%3E") repeat-x;background-size:28px 14px}
+.hero{background:var(--red);color:#fff}
+.lede{font-size:17px;max-width:40em;margin:0 0 24px}
+.grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:20px;align-items:start}
+.panel{background:var(--panel);color:var(--ink);border-radius:18px;padding:20px}
+fieldset{border:0;margin:0 0 18px;padding:0}
+legend,.lab{display:block;font-weight:700;font-size:15px;margin-bottom:8px;padding:0}
+.chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.chip{min-height:48px;border:1.5px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:12px;font:inherit;font-weight:700;cursor:pointer;padding:6px 4px}
+.chip:hover{border-color:var(--ink)}
+#from .chip[aria-pressed=true]{background:var(--yel);border-color:#cf9a00;color:#1b1214}
+#to .chip[aria-pressed=true]{background:#c8102e;border-color:#c8102e;color:#fff}
+.gps{width:100%;min-height:48px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px dashed var(--ink);background:transparent;color:var(--ink);border-radius:12px;font:inherit;font-weight:700;cursor:pointer}
+.gps[aria-pressed=true]{background:var(--yel);border:1.5px solid #cf9a00;color:#1b1214}
+.status{font-size:14px;color:var(--mute);margin:8px 0 0}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px;align-items:end}
+.row2:last-child{margin-bottom:0}
+.seg{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--line);border-radius:12px;overflow:hidden}
+.seg button{min-height:46px;border:0;background:var(--panel2);font:inherit;font-weight:700;color:var(--ink);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+input[type=datetime-local],select{width:100%;min-height:46px;font:inherit;font-size:16px;border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--panel);color:var(--ink)}
+input[type=datetime-local]{margin-top:8px}
+[hidden]{display:none!important}
+.step{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;align-items:center}
+.step button{min-height:46px;border:0;background:var(--panel2);font-size:22px;color:var(--ink);cursor:pointer}
+.step button:disabled{opacity:.35;cursor:default}
+.step output{text-align:center;font-weight:700;font-size:18px}
+.check{display:flex;align-items:center;gap:10px;min-height:46px;font-weight:700;cursor:pointer}
+.check input{width:22px;height:22px;accent-color:#c8102e;flex:none}
+:focus-visible{outline:3px solid var(--yel);outline-offset:2px}
+.meter{background:var(--meter);color:#f4ecea;border-radius:22px;padding:18px 20px 20px;border:6px solid #2b2224;position:sticky;top:16px}
+.mtop{display:flex;justify-content:space-between;align-items:center;font-size:15px;color:#d5c8c8}
+.lamp{background:var(--yel);color:#1b1214;font-weight:900;border-radius:6px;padding:2px 10px;font-size:14px;white-space:nowrap}
+.lamp.n{background:#e8233f;color:#fff}
+.screen{background:#050404;border-radius:12px;padding:6px 16px 4px;margin:10px 0 10px;display:flex;align-items:baseline;justify-content:flex-end;gap:10px;box-shadow:inset 0 2px 10px rgba(0,0,0,.9)}
+.screen small{font:700 24px "Barlow Condensed",sans-serif;color:#d39c2f}
+.screen b{font:700 clamp(64px,8vw,96px)/1.05 "Barlow Condensed",sans-serif;color:var(--led);font-variant-numeric:tabular-nums;text-shadow:0 0 18px rgba(255,184,28,.35)}
+.trip{margin:0;font-weight:700;font-size:17px;color:#fff}
+.mrow{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:15px;color:#e3d6d6}
+.mrow b{font:700 22px "Barlow Condensed",sans-serif;color:#fff}
+.bd{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:14px}
+.bd td{padding:5px 0;border-top:1px solid #30272a;color:#d6c9c9}
+.bd td:last-child{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;color:#fff;padding-left:12px}
+.acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:12px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;border:0;padding:8px 10px;text-align:center}
+.btn.y{background:var(--yel);color:#1b1214;grid-column:1/-1;font-size:18px;min-height:56px}
+.btn.y:hover{background:#ffd45a}
+.btn.l{background:#06c755;color:#fff}
+.btn.o{background:transparent;color:#f4ecea;border:1.5px solid #4c3f41}
+.btn.o:hover{border-color:#f4ecea}
+.note{font-size:14px;color:#d5c8c8;margin:12px 0 0}
+.msgbox summary{cursor:pointer;font-size:14px;color:#d5c8c8;margin-top:8px;min-height:32px}
+.msgbox pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.55 "Noto Sans TC",sans-serif;background:#050404;padding:10px 12px;border-radius:10px;color:#f4ecea;margin:6px 0 0}
+.mapgrid{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:32px;align-items:start}
+figure{margin:0}
+.fig{position:relative;min-height:540px;border-radius:18px;overflow:hidden;background:var(--land)}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+figcaption{font-size:14px;color:var(--mute);margin-top:8px}
+#m .sea{fill:var(--sea)}
+#m .sl{font-size:14px;font-weight:700;fill:var(--seaink);text-anchor:middle}
+#m .rd{stroke:var(--road);stroke-width:7;stroke-linecap:round}
+#m .rt{fill:none;stroke:var(--route);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+#m .car{fill:#ffc21a;stroke:#1b1214;stroke-width:2.5}
+#m .pill{fill:var(--bg);stroke:var(--road);stroke-width:1.5}
+#m .el{font-size:12.5px;fill:var(--ink);text-anchor:middle}
+#m .lb{font-size:15px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:var(--land);stroke-width:4px;stroke-linejoin:round}
+#m .fromt{fill:var(--fromt)}
+#m .tot{fill:var(--route)}
+#m .st{fill:var(--panel);stroke:var(--ink);stroke-width:3}
+#m .st.from{fill:#ffc21a}
+#m .st.to{fill:#c8102e}
+#m .hit{fill:transparent}
+#m .st.hub{stroke-width:4}
+#m .zone{fill:rgba(255,194,26,.2)}
+#m .ring{fill:none;stroke:var(--ink);stroke-opacity:.4;stroke-width:1.5;stroke-dasharray:5 6}
+#m .rl{font-size:13px;font-weight:700;fill:var(--ink);text-anchor:middle;paint-order:stroke;stroke:var(--land);stroke-width:4px;stroke-linejoin:round}
+#m .stop{cursor:pointer}
+#m .you{fill:#ffc21a;stroke:#1b1214;stroke-width:3}
+#m .na{fill:var(--ink)}
+#m .nt{font-size:13px;font-weight:700;fill:var(--ink);text-anchor:middle}
+.stops{list-style:none;padding:0;margin:16px 0 0}
+.stops li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:10px 0;border-top:1px solid var(--line);align-items:center}
+.stops b{font-size:17px;display:block}
+.stops span{color:var(--mute);font-size:14px}
+.stops .p{text-align:right;font-weight:700;white-space:nowrap}
+.stops .p a{display:block;font-weight:400;font-size:14px;color:var(--link)}
+.soft{background:var(--soft)}
+.fgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:40px;align-items:start}
+.mx{border-collapse:collapse;width:100%;font-size:15px;background:var(--panel);border-radius:14px;overflow:hidden}
+.mx th,.mx td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.mx thead th{font-size:14px;color:var(--mute)}
+.mx tbody th{text-align:left;padding-left:14px}
+.mx td{font-variant-numeric:tabular-nums;cursor:pointer}
+.mx td:hover{background:var(--panel2)}
+.mx td.same{color:var(--mute)}
+.mx td.on{background:var(--yel);color:#1b1214;font-weight:900}
+.rules{margin:0}
+.rules div{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.rules dt{font-weight:900}
+.rules dd{margin:0}
+.rules b{white-space:nowrap}
+.info{background:var(--black);color:#f4ecea}
+.igrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:18px}
+.igrid h3{font-size:18px;margin:0 0 6px;color:var(--yel)}
+.igrid p{margin:0;color:#ddd0d0}
+.qgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;margin-top:10px}
+.q{border-top:1px solid var(--line)}
+.q summary{cursor:pointer;font-weight:700;font-size:17px;padding:13px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.q summary::-webkit-details-marker{display:none}
+.q summary::after{content:"+";font-size:22px;line-height:1;color:var(--link)}
+.q[open] summary::after{content:"−"}
+.q p{margin:0 0 16px;color:var(--mute)}
+.foot{background:var(--black);color:#ddd0d0;padding-block:28px}
+.fbar{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between;align-items:center}
+.fbar b{color:#fff;font-size:18px}
+.small{font-size:13px;color:#b9aaaa;margin:0;max-width:34em}
+.bar{display:none}
+@media(max-width:860px){.grid,.mapgrid,.fgrid{grid-template-columns:minmax(0,1fr)}.meter{position:static;order:-1}.igrid{grid-template-columns:repeat(2,minmax(0,1fr))}.fig{min-height:360px}}
+@media(max-width:600px){.links{order:3;width:100%;overflow-x:auto}.links a{flex:none}.qgrid,.igrid{grid-template-columns:minmax(0,1fr)}.mx{font-size:13px}.mx th,.mx td{padding:8px 5px}.panel{padding:16px}.row2{gap:10px}.chip{font-size:15px}
+.bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--meter);color:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));gap:12px;align-items:center;justify-content:space-between;box-shadow:0 -4px 16px rgba(0,0,0,.3)}
+.bar b{font:700 30px/1 "Barlow Condensed",sans-serif;color:var(--led)}
+.bar span{display:block;font-size:13px;color:#d5c8c8}
+.bar .btn{min-height:48px;font-size:16px;padding:8px 18px}
+body{padding-bottom:78px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="#book">
+    <svg width="44" height="28" viewBox="0 0 44 28" aria-hidden="true"><path d="M7 23L10.5 6Q11.3 3 14.5 3H29.5Q32.7 3 33.5 6L37 23Z" fill="#ffc21a"/><rect x="2" y="22" width="40" height="5" rx="2.5" fill="#ffc21a"/><text x="22" y="18" text-anchor="middle" font-size="10.5" font-weight="900" fill="#1b1214" font-family="Noto Sans TC,sans-serif">南澳</text></svg>
+    <span>南澳家鄉車</span>
+  </a>
+  <nav class="links"><a href="#map">服務範圍</a><a href="#fares">車資表</a><a href="#info">服務資訊</a><a href="#faq">常見問題</a></nav>
+  <a class="callpill" href="tel:0912345678"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>0912-345-678</a>
+</header>
+<div class="weave" aria-hidden="true"></div>
+
+<main>
+<section class="band hero" id="book">
+  <div class="wrap">
+    <h1>在南澳，也叫得到車</h1>
+    <p class="lede">以南澳火車站為中心，接送南澳村、碧候、武塔、金岳和金洋。選好上下車地點就能看到車資，再打電話或傳 LINE 給司機。</p>
+    <div class="grid">
+      <form class="panel" id="f">
+        <fieldset>
+          <legend>上車地點</legend>
+          <button type="button" class="gps" id="gps" aria-pressed="false"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.1 7-12.5a7 7 0 0 0-14 0C5 14.9 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.6" fill="currentColor"/></svg>用 GPS 定位我的位置</button>
+          <div class="chips" id="from"></div>
+          <p class="status" id="gpsMsg" aria-live="polite">或直接選村子，也可以點下方地圖上的站點。</p>
+        </fieldset>
+        <fieldset>
+          <legend>下車地點</legend>
+          <div class="chips" id="to"></div>
+        </fieldset>
+        <div class="row2">
+          <div><span class="lab">什麼時候</span>
+            <div class="seg"><button type="button" data-w="now">立即</button><button type="button" data-w="later">預約</button></div>
+            <input type="datetime-local" id="dt" aria-label="預約時間" hidden>
+          </div>
+          <div><span class="lab">乘客人數</span>
+            <div class="step"><button type="button" id="minus" aria-label="減少一位">−</button><output id="pax">2</output><button type="button" id="plus" aria-label="增加一位">+</button></div>
+          </div>
+        </div>
+        <div class="row2">
+          <div><label class="lab" for="wait">需要司機等候</label>
+            <select id="wait"><option value="0">不用等</option><option value="10">10 分鐘</option><option value="20">20 分鐘</option><option value="30">30 分鐘</option><option value="45">45 分鐘</option><option value="60">1 小時</option></select>
+          </div>
+          <label class="check"><input type="checkbox" id="senior">長者／身障 9 折</label>
+        </div>
+      </form>
+
+      <aside class="meter" aria-live="polite">
+        <div class="mtop"><span>預估車資</span><span class="lamp" id="lamp">日間</span></div>
+        <div class="screen"><small>NT$</small><b id="total">160</b></div>
+        <p class="trip" id="trip">碧候村 → 南澳火車站</p>
+        <div class="mrow"><span>距離 <b id="km">4.0</b> 公里</span><span>車程約 <b id="min">9</b> 分鐘</span></div>
+        <table class="bd"><tbody id="bd"></tbody></table>
+        <div class="acts">
+          <a class="btn y" href="tel:0912345678"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>打電話叫車 0912-345-678</a>
+          <a class="btn l" id="line" href="https://line.me/R/msg/text/" target="_blank" rel="noopener">傳 LINE</a>
+          <a class="btn o" id="sms" href="sms:0912345678">傳簡訊</a>
+          <button class="btn o" id="copy" type="button">複製訊息</button>
+        </div>
+        <p class="note" id="note"></p>
+        <details class="msgbox" id="msgbox"><summary>看叫車訊息內容</summary><pre id="msg"></pre></details>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="map">
+  <div class="wrap mapgrid">
+    <figure>
+      <div class="fig"><svg id="m" role="img" aria-label="南澳五村與火車站的路線示意圖"></svg></div>
+      <figcaption>以南澳火車站為圓心，各村離圓心的距離就是離車站的道路里程（估計值）；黃色圓內免派車費。點站點可設為上車地點。</figcaption>
+    </figure>
+    <div>
+      <h2>從火車站出發，五個村子都到</h2>
+      <p>車子平常在南澳火車站等候，<span id="far"></span>。範圍以外的地方請來電包車。</p>
+      <ul class="stops" id="stops"></ul>
+    </div>
+  </div>
+</section>
+
+<section class="band soft" id="fares">
+  <div class="wrap fgrid">
+    <div>
+      <h2>車資一覽表</h2>
+      <p>日間單趟車資（元），已含派車費。點任一格可帶入上方試算。</p>
+      <div class="scroll"><table class="mx" id="mx"></table></div>
+    </div>
+    <div>
+      <h2>收費方式</h2>
+      <dl class="rules" id="rules"></dl>
+    </div>
+  </div>
+</section>
+
+<section class="band info" id="info">
+  <div class="wrap">
+    <h2>服務資訊</h2>
+    <div class="igrid">
+      <div><h3>服務時間</h3><p>每天 06:00–23:00，車子平常停在南澳火車站，配合火車班次接送。夜間和清晨請前一天預約。</p></div>
+      <div><h3>車輛</h3><p>五人座轎車，一趟最多 4 位乘客。後車廂可放 2 件大行李或一台折疊輪椅。</p></div>
+      <div><h3>付款</h3><p>下車時付現金或轉帳，金額以上車前說好的為準。</p></div>
+      <div><h3>區外包車</h3><p>蘇澳、羅東、宜蘭市、醫院看診和花蓮和平，請來電報價。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="faq">
+  <div class="wrap">
+    <h2>常見問題</h2>
+    <div class="qgrid">
+      <div>
+        <details class="q"><summary>怎麼叫車？</summary><p>選好上車和下車地點，按「打電話叫車」直接找司機；或按「傳 LINE」，訊息已經寫好上下車地點和車資，選司機的聊天室送出就好。</p></details>
+        <details class="q"><summary>GPS 定位有什麼用？</summary><p>按「用 GPS 定位」後，叫車訊息會附上你所在位置的地圖連結，司機可以直接開到門口。手機需要先允許瀏覽器使用位置。</p></details>
+        <details class="q"><summary>車資會跟試算不一樣嗎？</summary><p>上車前說好的金額就是車資。中途要多停一個地方或臨時改目的地，再依里程另外計算。</p></details>
+        <details class="q"><summary>可以預約早班火車嗎？</summary><p>可以，建議前一天預約。告訴司機車次和上車地點，司機會提早到。</p></details>
+      </div>
+      <div>
+        <details class="q"><summary>長者優惠怎麼用？</summary><p>65 歲以上或持身心障礙證明，上車時出示證件，車資打 9 折。</p></details>
+        <details class="q"><summary>可以帶寵物或輪椅嗎？</summary><p>寵物請放外出籠或提袋。折疊輪椅可以放後車廂。</p></details>
+        <details class="q"><summary>等候怎麼算？</summary><p>看診、買東西要司機等，前 5 分鐘免費，之後每 5 分鐘 15 元。回程另算一趟車資。</p></details>
+        <details class="q"><summary>到蘇澳或羅東可以嗎？</summary><p>可以包車，依距離和等候時間報價，請先來電。</p></details>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="weave" aria-hidden="true"></div>
+<footer class="band foot">
+  <div class="wrap fbar">
+    <div><b>南澳家鄉車</b><br>電話 0912-345-678（每天 06:00–23:00）</div>
+    <p class="small">示意資料：電話號碼、車型、站點座標與各段道路里程為範例，正式使用前請換成實際資料。</p>
+  </div>
+</footer>
+
+<div class="bar"><div><b id="barTotal">NT$160</b><span id="barSub"></span></div><a class="btn y" href="tel:0912345678">打電話叫車</a></div>
+
+<script>
+{
+// ===== 營運設定：改這裡就好 =====
+const C = {
+  phone: '0912-345-678',
+  base: 100, baseKm: 1.5, perKm: 25,          // 起跳 100 元含 1.5 公里，之後每公里 25 元
+  home: 'station', dispFree: 6, dispPer: 10,  // 以南澳火車站為中心出車，6 公里內免派車費，超過每公里 10 元
+  nightStart: 23, nightEnd: 6, nightRate: 0.2,// 夜間加成 20%
+  waitFree: 5, waitPer5: 15,                  // 等候前 5 分鐘免費，之後每 5 分鐘 15 元
+  senior: 0.9, speed: 35, roadFactor: 1.4, areaKm: 3, maxPax: 4
+};
+// 站點：lat/lng 給 GPS 找最近站點用（概略座標）
+// a 是在地圖上相對火車站的方向（度，0＝東、90＝北），離圓心的距離自動用道路里程計算
+const S = [
+  {id:'station', name:'南澳火車站', short:'車站', lat:24.4637, lng:121.8010, a:0,   lab:'tc'},
+  {id:'nanao',   name:'南澳村',     short:'南澳', lat:24.4612, lng:121.7948, a:200, lab:'lb'},
+  {id:'bihou',   name:'碧候村',     short:'碧候', lat:24.4745, lng:121.7860, a:140, lab:'t'},
+  {id:'wuta',    name:'武塔村',     short:'武塔', lat:24.4440, lng:121.7880, a:235, lab:'r'},
+  {id:'jinyue',  name:'金岳村',     short:'金岳', lat:24.4628, lng:121.7720, a:172, lab:'l'},
+  {id:'jinyang', name:'金洋村',     short:'金洋', lat:24.4300, lng:121.7400, a:205, lab:'b'}
+];
+// 道路：[起點, 終點, 公里, 道路名稱]
+const E = [
+  ['station','nanao',1,''], ['station','wuta',4.5,'台9線'], ['nanao','bihou',3,''],
+  ['bihou','jinyue',2.5,''], ['nanao','jinyue',4.5,'宜55'], ['nanao','wuta',4,''],
+  ['jinyue','wuta',4,''], ['wuta','jinyang',6.5,'宜57']
+];
+// ===== 設定結束 =====
+
+const by = Object.fromEntries(S.map(s => [s.id, s]));
+const $ = id => document.getElementById(id);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const tel = C.phone.replace(/\D/g, '');
+const pad = n => String(n).padStart(2, '0');
+const svg = $('m');
+let cur = null, msg = '';
+let st = {from:'station', to:'bihou', gps:null, when:'now', dt:'', pax:2, wait:0, senior:false};
+try {
+  const s = JSON.parse(localStorage.getItem('nanao-ride') || 'null');
+  if (s && by[s.from] && by[s.to]) Object.assign(st, {from:s.from, to:s.to, pax:Math.min(C.maxPax, s.pax || 2), senior:!!s.senior});
+} catch (e) {}
+
+function sp(a, b) {
+  if (a === b) return {km:0, path:[a]};
+  const d = {}, prev = {}, Q = new Set(S.map(s => s.id));
+  S.forEach(s => d[s.id] = Infinity); d[a] = 0;
+  while (Q.size) {
+    let u = null;
+    for (const q of Q) if (u === null || d[q] < d[u]) u = q;
+    Q.delete(u);
+    if (u === b || d[u] === Infinity) break;
+    for (const [p, q, w] of E) {
+      const v = p === u ? q : q === u ? p : null;
+      if (v && Q.has(v) && d[u] + w < d[v]) { d[v] = d[u] + w; prev[v] = u; }
+    }
+  }
+  const path = [b];
+  while (path[0] !== a) { const p = prev[path[0]]; if (!p) break; path.unshift(p); }
+  return {km:Math.round(d[b] * 10) / 10, path};
+}
+function hav(a, b) {
+  const r = Math.PI / 180, dLa = (b.lat - a.lat) * r, dLo = (b.lng - a.lng) * r;
+  const h = Math.sin(dLa / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLo / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(h));
+}
+function nearest(p) { let best = null; for (const s of S) { const d = hav(p, s); if (!best || d < best.d) best = {s, d}; } return best; }
+
+function price(o) {
+  const r = sp(o.fromId, o.toId);
+  let km = r.km + o.extra, short = false;
+  if (km < C.baseKm) { km = C.baseKm; short = true; }
+  const disp = sp(C.home, o.fromId).km + o.extra;
+  const night = o.hour >= C.nightStart || o.hour < C.nightEnd;
+  const run = Math.max(0, km - C.baseKm) * C.perKm;
+  const dispFee = Math.max(0, disp - C.dispFree) * C.dispPer;
+  const waitFee = Math.ceil(Math.max(0, o.wait - C.waitFree) / 5) * C.waitPer5;
+  const nightFee = night ? (C.base + run + dispFee) * C.nightRate : 0;
+  const sub = C.base + run + dispFee + waitFee + nightFee;
+  const off = o.senior ? sub * (1 - C.senior) : 0;
+  return {km, short, path:r.path, run, disp, dispFee, waitFee, nightFee, night, off,
+    total:Math.round((sub - off) / 10) * 10, min:Math.max(3, Math.round(km / C.speed * 60) + 2)};
+}
+const day = (a, b) => price({fromId:a, toId:b, extra:0, hour:12, wait:0, senior:false});
+const localISO = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+function defDT() { const d = new Date(Date.now() + 3600e3); d.setMinutes(Math.ceil(d.getMinutes() / 10) * 10, 0, 0); return localISO(d); }
+function tripDate() { if (st.when === 'later' && st.dt) { const d = new Date(st.dt); if (!isNaN(d)) return d; } return new Date(); }
+
+function draw() {
+  const W = svg.clientWidth, H = svg.clientHeight;
+  if (!W || !H || !cur) return;
+  const nar = W < 520, fs = nar ? 14 : 15;
+  const P = {l:nar ? 40 : 70, t:50, b:46};
+  // 以火車站（C.home）為圓心：每站離圓心的距離＝道路里程，方向＝設定的 a
+  const pos = {};
+  for (const s of S) {
+    const r = s.id === C.home ? 0 : sp(C.home, s.id).km, a = s.a * Math.PI / 180;
+    pos[s.id] = [r * Math.cos(a), r * Math.sin(a)];
+  }
+  const xs = S.map(s => pos[s.id][0]), ys = S.map(s => pos[s.id][1]);
+  const minX = Math.min(0, ...xs), maxY = Math.max(0, ...ys), minY = Math.min(0, ...ys);
+  const cx = nar ? W - 70 : W * 0.66;
+  const k = Math.min((cx - P.l) / (-minX + 0.35), (H - P.t - P.b) / (maxY - minY + 0.3));
+  const cy = P.t + (H - P.t - P.b - (maxY - minY) * k) / 2 + maxY * k;
+  const X = s => cx + pos[s.id][0] * k, Y = s => cy - pos[s.id][1] * k;
+  const sea = Math.min(W - 24, cx + (nar ? 40 : Math.max(60, 2 * k)));
+  const tw = (t, f) => [...t].reduce((s, c) => s + (c.charCodeAt(0) > 255 ? f : f * .58), 0);
+  const boxes = [];
+  const hit = b => b[0] < 4 || b[1] < 4 || b[0] + b[2] > W - 4 || b[1] + b[3] > H - 4 ||
+    boxes.some(o => b[0] < o[0] + o[2] && b[0] + b[2] > o[0] && b[1] < o[1] + o[3] && b[1] + b[3] > o[1]);
+
+  let h = `<defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" style="stop-color:var(--land2)"/><stop offset=".8" style="stop-color:var(--land)"/></linearGradient></defs><rect width="${W}" height="${H}" fill="url(#lg)"/>`;
+  const rings = [C.dispFree, C.dispFree * 2];
+  h += `<circle cx="${cx}" cy="${cy}" r="${C.dispFree * k}" class="zone"/>`;
+  for (const r of rings) h += `<circle cx="${cx}" cy="${cy}" r="${r * k}" class="ring"/>`;
+  let d = `M${W} 0 L${sea} 0`;
+  for (let y = 0; y < H; y += 28) d += ` Q${sea - 9} ${y + 14} ${sea} ${y + 28}`;
+  h += `<path d="${d} L${W} ${H + 28}Z" class="sea"/>`;
+  [...'太平洋'].forEach((c, i) => { h += `<text x="${(sea + W) / 2 + 2}" y="${H / 2 - 18 + i * 19}" class="sl">${c}</text>`; });
+  for (const [a, b] of E) h += `<line x1="${X(by[a])}" y1="${Y(by[a])}" x2="${X(by[b])}" y2="${Y(by[b])}" class="rd"/>`;
+
+  const pts = cur.p.path.map(id => [X(by[id]), Y(by[id])]);
+  let you = null;
+  if (st.gps) {
+    const s = cur.fromStop, g = st.gps;
+    const ux = (g.lng - s.lng) * Math.cos(s.lat * Math.PI / 180), uy = g.lat - s.lat, n = Math.hypot(ux, uy);
+    const off = Math.min(52, Math.max(24, g.near.d * 30));
+    you = n ? [X(s) + ux / n * off, Y(s) - uy / n * off] : [X(s) - off, Y(s)];
+    pts.unshift(you);
+  }
+  if (pts.length > 1) {
+    const pd = 'M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L');
+    h += `<path d="${pd}" class="rt"/>`;
+    if (!reduce) {
+      let L = 0;
+      for (let i = 1; i < pts.length; i++) L += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+      h += `<circle r="7" class="car"><animateMotion dur="${Math.max(2, L / 110).toFixed(1)}s" repeatCount="indefinite" path="${pd}"/></circle>`;
+    }
+  }
+
+  // 站點與名稱（先放，佔位置）
+  let stops = '';
+  for (const s of S) {
+    const x = X(s), y = Y(s);
+    boxes.push([x - 13, y - 13, 26, 26]);
+    const role = s.id === st.to ? 'to' : (!st.gps && s.id === st.from ? 'from' : '');
+    const nm = nar ? s.short : s.name, tag = role === 'to' ? ' 下車' : role === 'from' ? ' 上車' : '';
+    const L = {tc:[x + (nar ? 6 : 12), y - 18, 'middle'], t:[x, y - 18, 'middle'], b:[x, y + 29, 'middle'], l:[x - 16, y + 5, 'end'], r:[x + 16, y + 5, 'start'], lb:[x - 16, y + 20, 'end']}[s.lab];
+    const w = tw(nm + tag, fs), x0 = L[2] === 'middle' ? L[0] - w / 2 : L[2] === 'end' ? L[0] - w : L[0];
+    boxes.push([x0, L[1] - fs + 1, w, fs + 4]);
+    stops += `<g class="stop" data-id="${s.id}"><circle cx="${x}" cy="${y}" r="22" class="hit"/><circle cx="${x}" cy="${y}" r="${s.id === C.home ? 13 : role ? 11 : 8}" class="st ${role}${s.id === C.home ? ' hub' : ''}"/><text x="${L[0]}" y="${L[1]}" text-anchor="${L[2]}" class="lb">${nm}${tag ? `<tspan class="${role}t">${tag}</tspan>` : ''}</text></g>`;
+  }
+  // 道路里程標籤：有路名的先放，碰到別的字就略過
+  if (!nar) for (const [a, b, km, nm] of [...E].sort((p, q) => !!q[3] - !!p[3])) {
+    const x1 = X(by[a]), y1 = Y(by[a]), x2 = X(by[b]), y2 = Y(by[b]), len = Math.hypot(x2 - x1, y2 - y1);
+    if (len < 80) continue;
+    const t = (nm && len > 140 ? nm + ' ' : '') + km + ' km', w = tw(t, 12.5) + 14;
+    const mx = (x1 + x2) / 2, my = (y1 + y2) / 2, bx = [mx - w / 2, my - 11, w, 22];
+    if (hit(bx)) continue;
+    boxes.push(bx);
+    h += `<rect x="${bx[0]}" y="${bx[1]}" width="${w}" height="22" rx="11" class="pill"/><text x="${mx}" y="${my + 4.5}" class="el">${t}</text>`;
+  }
+  h += stops;
+  // 距離圈標籤
+  rings.forEach((r, i) => {
+    const t = i === 0 ? (nar ? `${r} 公里` : `${r} 公里內免派車費`) : `${r} 公里`, w = tw(t, 13);
+    for (const deg of [90, 115, 65, 140, 40, 165, 15]) {
+      const a = deg * Math.PI / 180, x = cx + r * k * Math.cos(a), y = cy + r * k * Math.sin(a) - 6;
+      const bx = [x - w / 2, y - 13, w, 17];
+      if (x + w / 2 > sea - 4 || hit(bx)) continue;
+      boxes.push(bx);
+      h += `<text x="${x}" y="${y}" class="rl">${t}</text>`;
+      break;
+    }
+  });
+  if (you) h += `<circle cx="${you[0]}" cy="${you[1]}" r="9" class="you"/><text x="${you[0]}" y="${you[1] - 15}" text-anchor="middle" class="lb">你的位置</text>`;
+  h += `<g transform="translate(${nar ? 14 : 22},14)"><path d="M8 0L15 20L8 15L1 20Z" class="na"/><text x="8" y="36" class="nt">北</text></g>`;
+  svg.innerHTML = h;
+}
+
+function update() {
+  const fromStop = st.gps ? st.gps.near.s : by[st.from];
+  const extra = st.gps ? st.gps.near.d * C.roadFactor : 0;
+  const d = tripDate();
+  const p = price({fromId:fromStop.id, toId:st.to, extra, hour:d.getHours(), wait:st.wait, senior:st.senior});
+  cur = {p, fromStop};
+  document.querySelectorAll('#from .chip').forEach(b => b.setAttribute('aria-pressed', String(!st.gps && b.dataset.id === st.from)));
+  document.querySelectorAll('#to .chip').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.id === st.to)));
+  $('gps').setAttribute('aria-pressed', String(!!st.gps));
+  document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.w === st.when)));
+  $('dt').hidden = st.when !== 'later';
+  $('pax').textContent = st.pax;
+  $('minus').disabled = st.pax <= 1;
+  $('plus').disabled = st.pax >= C.maxPax;
+
+  const fromName = st.gps ? `目前位置（${fromStop.name}附近）` : fromStop.name;
+  $('total').textContent = p.total;
+  $('km').textContent = p.km.toFixed(1);
+  $('min').textContent = p.min;
+  $('trip').textContent = `${fromName} → ${by[st.to].name}`;
+  $('lamp').textContent = p.night ? `夜間 +${Math.round(C.nightRate * 100)}%` : '日間';
+  $('lamp').className = 'lamp' + (p.night ? ' n' : '');
+  const rows = [
+    [`起跳（含 ${C.baseKm} 公里）`, C.base],
+    [p.short ? `短程（${C.baseKm} 公里內）` : `續程 ${(p.km - C.baseKm).toFixed(1)} 公里 × ${C.perKm} 元`, p.run],
+    [`派車 ${p.disp.toFixed(1)} 公里（${C.dispFree} 公里內免費）`, p.dispFee],
+    [`夜間加成 ${Math.round(C.nightRate * 100)}%`, p.nightFee],
+    [st.wait ? `等候 ${st.wait} 分鐘（前 ${C.waitFree} 分鐘免費）` : '等候', p.waitFee],
+    [`長者／身障 ${Math.round(C.senior * 10)} 折`, -p.off]
+  ];
+  $('bd').innerHTML = rows.map(([k, v]) => `<tr><td>${k}</td><td>${v ? (v < 0 ? '−' : '') + Math.round(Math.abs(v)) : '—'}</td></tr>`).join('');
+
+  const notes = [];
+  if (st.gps && st.gps.near.d > C.areaKm) notes.push(`你目前離${fromStop.name}約 ${st.gps.near.d.toFixed(1)} 公里，超出服務範圍，請先來電詢問。`);
+  if (st.when === 'later' && d < new Date()) notes.push('預約時間已經過了，請重新選擇。');
+  if (p.night && st.when === 'now') notes.push('現在是夜間時段，請先來電確認能否出車。');
+  if (!notes.length) notes.push('上車前說好的金額就是車資；中途加停靠點另外計算。');
+  $('note').textContent = notes.join(' ');
+
+  const timeTxt = st.when === 'now' ? '立即' : `預約 ${d.getMonth() + 1}/${d.getDate()}（週${'日一二三四五六'[d.getDay()]}）${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const lines = ['【南澳家鄉車】叫車', `上車：${fromName}`];
+  if (st.gps) lines.push(`定位：https://www.google.com/maps?q=${st.gps.lat.toFixed(5)},${st.gps.lng.toFixed(5)}`);
+  lines.push(`下車：${by[st.to].name}`, `時間：${timeTxt}`, `人數：${st.pax} 人`);
+  if (st.wait) lines.push(`需要等候：約 ${st.wait} 分鐘`);
+  if (st.senior) lines.push('長者／身障優惠');
+  lines.push(`預估車資：NT$${p.total}（約 ${p.km.toFixed(1)} 公里）`);
+  msg = lines.join('\n');
+  $('msg').textContent = msg;
+  const enc = encodeURIComponent(msg);
+  $('line').href = 'https://line.me/R/msg/text/?' + enc;
+  $('sms').href = `sms:${tel}?&body=${enc}`;
+  $('barTotal').textContent = 'NT$' + p.total;
+  $('barSub').textContent = `${p.km.toFixed(1)} 公里 · 約 ${p.min} 分鐘`;
+  document.querySelectorAll('#mx td').forEach(td => td.classList.toggle('on', !st.gps && td.dataset.f === st.from && td.dataset.t === st.to));
+  draw();
+  try { localStorage.setItem('nanao-ride', JSON.stringify({from:st.from, to:st.to, pax:st.pax, senior:st.senior})); } catch (e) {}
+}
+
+// 站點按鈕
+for (const [el, key] of [[$('from'), 'from'], [$('to'), 'to']]) {
+  el.innerHTML = S.map(s => `<button type="button" class="chip" data-id="${s.id}">${s.name}</button>`).join('');
+  el.addEventListener('click', e => {
+    const b = e.target.closest('.chip');
+    if (!b) return;
+    st[key] = b.dataset.id;
+    if (key === 'from') { st.gps = null; $('gpsMsg').textContent = `上車地點：${by[st.from].name}`; }
+    update();
+  });
+}
+// 車資表
+$('mx').innerHTML = `<thead><tr><th>出發＼到達</th>${S.map(s => `<th>${s.short}</th>`).join('')}</tr></thead><tbody>` +
+  S.map(a => `<tr><th>${a.name}</th>${S.map(b => `<td data-f="${a.id}" data-t="${b.id}"${a.id === b.id ? ' class="same"' : ''}>${day(a.id, b.id).total}</td>`).join('')}</tr>`).join('') + '</tbody>';
+$('mx').addEventListener('click', e => {
+  const td = e.target.closest('td');
+  if (!td) return;
+  st.from = td.dataset.f; st.to = td.dataset.t; st.gps = null;
+  $('gpsMsg').textContent = `上車地點：${by[st.from].name}`;
+  update();
+  $('book').scrollIntoView({behavior:reduce ? 'auto' : 'smooth'});
+});
+// 收費方式
+$('rules').innerHTML = [
+  ['起跳', `<b>${C.base} 元</b>，含前 ${C.baseKm} 公里`],
+  ['續程', `每公里 <b>${C.perKm} 元</b>`],
+  ['派車', `車子從${by[C.home].name}出發，${C.dispFree} 公里內免費；超過的部分每公里 <b>${C.dispPer} 元</b>（目前只有${S.filter(s => sp(C.home, s.id).km > C.dispFree).map(s => s.name).join('、') || '區外'}上車會用到）`],
+  ['夜間', `${pad(C.nightStart)}:00–${pad(C.nightEnd)}:00 加成 <b>${Math.round(C.nightRate * 100)}%</b>，請先預約`],
+  ['等候', `前 ${C.waitFree} 分鐘免費，之後每 5 分鐘 <b>${C.waitPer5} 元</b>`],
+  ['長者／身障', `65 歲以上或持身心障礙證明 <b>${Math.round(C.senior * 10)} 折</b>`],
+  ['春節', '除夕到初五，每趟加收 <b>50 元</b>'],
+  ['金額', '以 10 元為單位四捨五入；上車前說好的金額就是車資']
+].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+// 服務範圍清單
+{
+  const far = S.reduce((m, s) => sp(C.home, s.id).km > sp(C.home, m.id).km ? s : m, S[0]);
+  $('far').textContent = `最遠的${far.name}離車站約 ${sp(C.home, far.id).km} 公里`;
+}
+$('stops').innerHTML = S.map(s => {
+  const q = s.id === 'station' ? '宜蘭 南澳火車站' : '宜蘭縣南澳鄉' + s.name;
+  const sub = s.id === 'station' ? '台鐵北迴線，接送火車' : `距火車站約 ${sp('station', s.id).km} 公里`;
+  const fare = s.id === 'station' ? '' : `從車站 NT$${day('station', s.id).total}`;
+  return `<li><div><b>${s.name}</b><span>${sub}</span></div><div class="p">${fare}<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}" target="_blank" rel="noopener">Google 地圖</a></div></li>`;
+}).join('');
+
+// GPS
+$('gps').addEventListener('click', () => {
+  const m = $('gpsMsg');
+  if (!('geolocation' in navigator)) { m.textContent = '這個瀏覽器不支援定位，請直接選村子或點地圖上的站點。'; return; }
+  m.textContent = '定位中…';
+  try {
+    navigator.geolocation.getCurrentPosition(pos => {
+      const g = {lat:pos.coords.latitude, lng:pos.coords.longitude};
+      g.near = nearest(g);
+      st.gps = g;
+      m.textContent = g.near.d > C.areaKm
+        ? `已定位，但不在服務範圍內（離${g.near.s.name}約 ${g.near.d.toFixed(1)} 公里）。`
+        : `已定位：在${g.near.s.name}附近約 ${Math.max(.1, g.near.d).toFixed(1)} 公里。叫車訊息會附上你的位置連結。`;
+      update();
+    }, () => {
+      m.textContent = '沒辦法取得定位：可能沒有允許位置權限，或這個畫面不開放定位。請直接選村子，或點地圖上的站點。';
+    }, {enableHighAccuracy:true, timeout:10000, maximumAge:60000});
+  } catch (e) { m.textContent = '這個畫面不開放定位，請直接選村子。'; }
+});
+svg.addEventListener('click', e => {
+  const g = e.target.closest('.stop');
+  if (!g) return;
+  st.from = g.dataset.id; st.gps = null;
+  $('gpsMsg').textContent = `上車地點：${by[st.from].name}`;
+  update();
+});
+document.querySelector('.seg').addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  st.when = b.dataset.w;
+  if (st.when === 'later' && !st.dt) { st.dt = defDT(); $('dt').value = st.dt; }
+  update();
+});
+$('dt').min = localISO(new Date());
+$('dt').addEventListener('input', e => { st.dt = e.target.value; update(); });
+$('minus').addEventListener('click', () => { if (st.pax > 1) { st.pax--; update(); } });
+$('plus').addEventListener('click', () => { if (st.pax < C.maxPax) { st.pax++; update(); } });
+$('wait').value = String(st.wait);
+$('wait').addEventListener('change', e => { st.wait = +e.target.value; update(); });
+$('senior').checked = st.senior;
+$('senior').addEventListener('change', e => { st.senior = e.target.checked; update(); });
+$('f').addEventListener('submit', e => e.preventDefault());
+$('copy').addEventListener('click', () => {
+  const btn = $('copy');
+  const done = () => { btn.textContent = '已複製'; setTimeout(() => { btn.textContent = '複製訊息'; }, 1600); };
+  const fail = () => {
+    $('msgbox').open = true;
+    const r = document.createRange(); r.selectNodeContents($('msg'));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    btn.textContent = '請長按複製';
+  };
+  try { navigator.clipboard.writeText(msg).then(done, fail); } catch (e) { fail(); }
+});
+const ro = new ResizeObserver(() => draw());
+ro.observe(svg);
+update();
+}
+</script>
+</body>
+</html>
